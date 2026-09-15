@@ -10,8 +10,8 @@
   --bg-dark:#020617;
   --table-felt:radial-gradient(ellipse at center,#0b6235 0%,#04381c 70%,#011d0e 100%);
   --gold:#fbbf24;--rix:#f59e0b;--green:#10b981;--red:#ef4444;--blue:#3b82f6;
-  --card-w:clamp(30px,8vw,42px);
-  --card-h:calc(var(--card-w) * 1.4);
+  --card-w:36px;
+  --card-h:50px;
   --surface:#0f172a;--surface-2:#1e293b;--border:#1e293b;
   --text:#f8fafc;--text-muted:#94a3b8;
 }
@@ -23,283 +23,168 @@ body.light{
 }
 body{
   background:var(--bg-dark);color:var(--text);
-  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  min-height:100vh;padding:6px 4px;overflow-x:hidden;
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:6px 4px 4px;overflow-x:hidden;
   transition:background .3s,color .3s;
 }
-/* ===== TOP TOOLBAR ===== */
-.top-toolbar{width:100%;max-width:480px;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:4px 6px;margin-bottom:2px}
+
+/* TOP TOOLBAR */
+.top-toolbar{width:100%;max-width:480px;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:2px 6px;margin-bottom:2px;flex-shrink:0}
 .toolbar-left,.toolbar-right{display:flex;gap:6px;align-items:center}
-.toolbar-btn{
-  width:34px;height:34px;border-radius:10px;
-  border:1.5px solid var(--border);background:var(--surface);
-  color:var(--text-muted);cursor:pointer;
-  display:grid;place-items:center;font-size:14px;transition:all .2s ease;
-  position:relative;
-}
+.toolbar-btn{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;display:grid;place-items:center;font-size:14px;transition:all .2s ease;position:relative}
 .toolbar-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
 .toolbar-btn.muted{opacity:.4}
 .badge-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#4ade80;border:1.5px solid var(--bg-dark)}
-/* ===== HEADER ===== */
-.casino-header{text-align:center;margin-top:2px;margin-bottom:2px}
-.casino-title{
-  font-size:clamp(1.2rem,4.5vw,1.7rem);
-  background:linear-gradient(135deg,#fef08a 0%,#f59e0b 50%,#b45309 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  text-transform:uppercase;font-weight:900;letter-spacing:1px;
-  filter:drop-shadow(0 0 12px rgba(245,158,11,.3));
-}
-.level-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 12px;border-radius:999px;margin-top:2px;
-  background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;
-  font-size:.68rem;font-weight:800;
-}
-.session-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:3px 10px;border-radius:999px;margin-left:6px;
-  background:rgba(0,0,0,.3);color:#94a3b8;
-  font-size:.65rem;font-weight:700;
-}
+
+/* HEADER */
+.casino-header{text-align:center;margin-bottom:2px;flex-shrink:0}
+.casino-title{font-size:clamp(1.1rem,4.2vw,1.5rem);background:linear-gradient(135deg,#fef08a 0%,#f59e0b 50%,#b45309 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;font-weight:900;letter-spacing:1px;filter:drop-shadow(0 0 12px rgba(245,158,11,.3))}
+.badges-row{display:inline-flex;gap:6px;align-items:center;margin-top:2px;flex-wrap:wrap;justify-content:center}
+.level-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-size:.65rem;font-weight:800}
+.session-badge{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;background:rgba(0,0,0,.3);color:#94a3b8;font-size:.62rem;font-weight:700;border:1px solid rgba(148,163,184,.2)}
 .session-badge .plus{color:#4ade80}
 .session-badge .minus{color:#f87171}
-/* ===== TABLE ===== */
-.table-container{position:relative;width:100%;max-width:480px;margin:8px 0 4px 0}
+
+/* TABLE */
+.table-container{position:relative;width:100%;max-width:460px;margin:6px 0 4px;flex-shrink:0}
 .poker-table{
-  position:relative;width:100%;height:clamp(400px,60vh,520px);
-  background:var(--table-felt);border:12px solid #2d120d;border-radius:200px;
-  box-shadow:0 0 0 2px var(--gold),inset 0 0 90px rgba(0,0,0,.95),0 12px 30px rgba(0,0,0,.9);
-  overflow:visible;transition:transform .1s ease;
-  animation:tableGlow 3s ease-in-out infinite alternate;
+  position:relative;width:100%;height:clamp(360px,54vh,470px);
+  background:var(--table-felt);border:10px solid #2d120d;border-radius:180px;
+  box-shadow:0 0 0 2px var(--gold),inset 0 0 80px rgba(0,0,0,.95),0 10px 25px rgba(0,0,0,.9);
+  overflow:visible;animation:tableGlow 3s ease-in-out infinite alternate;
 }
 @keyframes tableGlow{
-  0%{box-shadow:0 0 0 2px var(--gold),inset 0 0 90px rgba(0,0,0,.95),0 12px 30px rgba(0,0,0,.9)}
-  100%{box-shadow:0 0 0 4px #fcd34d,inset 0 0 100px rgba(0,0,0,.95),0 12px 35px rgba(251,191,36,.2)}
+  0%{box-shadow:0 0 0 2px var(--gold),inset 0 0 80px rgba(0,0,0,.95),0 10px 25px rgba(0,0,0,.9)}
+  100%{box-shadow:0 0 0 4px #fcd34d,inset 0 0 90px rgba(0,0,0,.95),0 10px 30px rgba(251,191,36,.2)}
 }
 .poker-table.shake{animation:shake .3s ease-in-out}
-@keyframes shake{0%{transform:rotate(0deg)}25%{transform:rotate(1.5deg)}75%{transform:rotate(-1.5deg)}100%{transform:rotate(0deg)}}
-.table-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;z-index:2;width:100%;max-width:220px}
-.pot-box{
-  background:rgba(15,23,42,.95);border:1.5px solid var(--gold);
-  padding:4px 14px;border-radius:20px;color:var(--gold);
-  font-weight:900;font-size:clamp(.8rem,3vw,1rem);
-  box-shadow:0 0 14px rgba(251,191,36,.4);
-  white-space:nowrap;text-align:center;line-height:1.2;
-  transition:transform .2s ease;
-}
+@keyframes shake{0%{transform:rotate(0)}25%{transform:rotate(1.5deg)}75%{transform:rotate(-1.5deg)}100%{transform:rotate(0)}}
+
+.table-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2}
+.pot-box{background:rgba(15,23,42,.95);border:1.5px solid var(--gold);padding:4px 14px;border-radius:20px;color:var(--gold);font-weight:900;font-size:clamp(.8rem,3vw,1rem);box-shadow:0 0 14px rgba(251,191,36,.4);white-space:nowrap;text-align:center;line-height:1.2;transition:transform .2s ease}
 .pot-box.bump{animation:potBump .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes potBump{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .side-pot-box{font-size:.6rem;color:#94a3b8;background:rgba(0,0,0,.6);padding:2px 10px;border-radius:10px;border:1px solid #475569;display:none}
-.community-cards{display:flex;gap:3px;min-height:var(--card-h);justify-content:center;align-items:center}
-/* ===== SEATS ===== */
+
+.community-cards{display:flex;gap:4px;justify-content:center;align-items:center;min-height:var(--card-h);flex-wrap:nowrap}
+
+/* SEATS */
 .seat{position:absolute;display:flex;flex-direction:column;align-items:center;z-index:5}
-.seat-top{top:12px;left:50%;transform:translateX(-50%);width:105px}
-.seat-left{top:50%;left:4px;transform:translateY(-50%);width:82px}
-.seat-right{top:50%;right:4px;transform:translateY(-50%);width:82px}
-.seat-bottom{bottom:10px;left:50%;transform:translateX(-50%);width:120px}
-.avatar-box{
-  position:relative;background:rgba(15,23,42,.92);border:1.5px solid #475569;
-  border-radius:8px;padding:3px 4px;text-align:center;width:100%;
-  box-shadow:0 4px 10px rgba(0,0,0,.8);backdrop-filter:blur(4px);
-  transition:all .25s ease;
-}
-.seat.active-turn .avatar-box{
-  border-color:var(--gold);box-shadow:0 0 16px var(--gold);transform:scale(1.05);
-  animation:pulse-avatar .8s ease-in-out infinite alternate;
-}
+.seat-top{top:10px;left:50%;transform:translateX(-50%);width:105px}
+.seat-left{top:50%;left:6px;transform:translateY(-50%);width:100px}
+.seat-right{top:50%;right:6px;transform:translateY(-50%);width:100px}
+.seat-bottom{bottom:8px;left:50%;transform:translateX(-50%);width:120px}
+
+.avatar-box{position:relative;background:rgba(15,23,42,.92);border:1.5px solid #475569;border-radius:8px;padding:3px 5px;text-align:center;width:100%;box-shadow:0 4px 10px rgba(0,0,0,.8);backdrop-filter:blur(4px);transition:all .25s ease}
+.seat.active-turn .avatar-box{border-color:var(--gold);box-shadow:0 0 16px var(--gold);transform:scale(1.05);animation:pulse-avatar .8s ease-in-out infinite alternate}
 @keyframes pulse-avatar{
   0%{transform:scale(1.05);box-shadow:0 0 12px var(--gold)}
   100%{transform:scale(1.08);box-shadow:0 0 22px var(--gold),0 0 40px rgba(251,191,36,.2)}
 }
-.seat.winner .avatar-box{
-  border-color:#4ade80;box-shadow:0 0 40px #4ade80,0 0 80px rgba(74,222,128,.5);
-  animation:pulse-win .6s ease-in-out infinite alternate;z-index:10;
-}
+.seat.winner .avatar-box{border-color:#4ade80;box-shadow:0 0 40px #4ade80,0 0 80px rgba(74,222,128,.5);animation:pulse-win .6s ease-in-out infinite alternate;z-index:10}
 @keyframes pulse-win{
   0%{transform:scale(1);box-shadow:0 0 20px #4ade80}
   100%{transform:scale(1.1);box-shadow:0 0 50px #4ade80,0 0 100px rgba(74,222,128,.4)}
 }
-.seat.folded{opacity:.4;filter:grayscale(.7)}
-.player-name{font-weight:800;font-size:clamp(.58rem,2vw,.73rem);color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.player-chips{color:var(--rix);font-weight:800;font-size:clamp(.56rem,1.9vw,.7rem);font-variant-numeric:tabular-nums}
-.player-bet{
-  position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
-  background:rgba(0,0,0,.85);color:var(--gold);
-  padding:1px 8px;border-radius:8px;
-  font-size:.6rem;font-weight:900;
-  border:1px solid rgba(251,191,36,.5);
-  white-space:nowrap;display:none;
-  z-index:6;
-}
-.player-bet.show{display:block;animation:betPop .3s cubic-bezier(.34,1.56,.64,1)}
-@keyframes betPop{0%{transform:translateX(-50%) scale(.5);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
-.dealer-marker{
-  position:absolute;top:-6px;right:-6px;background:#ef4444;color:white;
-  font-weight:900;font-size:.55rem;width:17px;height:17px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  border:1.5px solid white;box-shadow:0 2px 5px rgba(0,0,0,.6);
-}
-/* ===== POSITION BADGES — FIXED! (không dùng class .btn nữa) ===== */
-.position-badge{
-  position:absolute;top:-8px;left:-8px;
-  padding:2px 7px;border-radius:8px;
-  font-size:.55rem;font-weight:900;line-height:1;
-  border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6);
-  white-space:nowrap;z-index:10;
-  letter-spacing:.04em;
-}
+.seat.folded{opacity:.45;filter:grayscale(.7)}
+.player-name{font-weight:800;font-size:.68rem;color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+.player-chips{color:var(--rix);font-weight:800;font-size:.66rem;font-variant-numeric:tabular-nums;line-height:1.1}
+
+.player-bet{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:var(--gold);padding:1px 8px;border-radius:8px;font-size:.6rem;font-weight:900;border:1px solid rgba(251,191,36,.5);white-space:nowrap;display:none;z-index:6}
+.player-bet.show{display:block}
+
+.dealer-marker{position:absolute;top:-6px;right:-6px;background:#ef4444;color:#fff;font-weight:900;font-size:.55rem;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6)}
+
+/* ===== POSITION BADGE — FIXED! ===== */
+.position-badge{position:absolute;top:-8px;left:-8px;padding:2px 7px;border-radius:8px;font-size:.55rem;font-weight:900;line-height:1;border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6);white-space:nowrap;z-index:10;letter-spacing:.04em}
 .position-badge.pb-btn{background:#8b5cf6;color:#fff}
 .position-badge.pb-sb{background:#3b82f6;color:#fff}
 .position-badge.pb-bb{background:#f59e0b;color:#fff}
-.speech-bubble{
-  position:absolute;top:-24px;background:var(--gold);color:#0f172a;
-  font-weight:800;font-size:.62rem;padding:2px 7px;border-radius:8px;
-  opacity:0;transition:opacity .2s,transform .2s;
-  transform:translateY(4px);z-index:50;white-space:nowrap;
-  box-shadow:0 3px 8px rgba(0,0,0,.5);pointer-events:none;
-}
+
+.speech-bubble{position:absolute;top:-22px;background:var(--gold);color:#0f172a;font-weight:800;font-size:.62rem;padding:2px 8px;border-radius:8px;opacity:0;transition:opacity .2s,transform .2s;transform:translateY(4px);z-index:50;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.5);pointer-events:none}
 .speech-bubble.show{opacity:1;transform:translateY(0)}
 .seat-top .speech-bubble{top:2px;left:102%;transform:translateX(0)}
-.cards-row{display:flex;gap:3px;margin:2px 0;min-height:var(--card-h);justify-content:center}
-/* ===== CARDS ===== */
-.card-container{perspective:1000px;width:var(--card-w);height:var(--card-h)}
+.seat-left .speech-bubble{top:-4px;left:100%}
+.seat-right .speech-bubble{top:-4px;right:100%}
+
+/* CARDS ROW — hide when empty */
+.cards-row{display:none;gap:3px;margin:4px 0 0;justify-content:center;height:var(--card-h);width:100%}
+.cards-row.has-cards{display:flex}
+.seat-bottom .cards-row{margin:0 0 4px}
+.seat-left .cards-row,.seat-right .cards-row{margin:4px 0 0}
+
+/* CARDS */
+.card-container{perspective:1000px;width:var(--card-w);height:var(--card-h);flex-shrink:0}
 .card-inner{position:relative;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
 .card-container.flipped .card-inner{transform:rotateY(180deg)}
-.card-front,.card-back{
-  position:absolute;width:100%;height:100%;backface-visibility:hidden;
-  border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.6);
-  display:flex;flex-direction:column;justify-content:space-between;
-  padding:2px 3px;font-weight:900;font-size:clamp(.68rem,2.2vw,.82rem);
-}
+.card-front,.card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:space-between;padding:2px 3px;font-weight:900;font-size:.72rem}
 .card-front{background:#fff;border:1px solid #cbd5e1;transform:rotateY(180deg)}
 .card-front.red{color:#dc2626}
 .card-front.black{color:#0f172a}
-.card-front .suit{align-self:flex-end;font-size:.78rem;line-height:1}
-.card-back{
-  background:
-    repeating-linear-gradient(45deg,rgba(59,130,246,.15) 0 4px,transparent 4px 8px),
-    repeating-linear-gradient(-45deg,rgba(59,130,246,.15) 0 4px,transparent 4px 8px),
-    linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);
-  border:1px solid var(--gold);transform:rotateY(0deg);
-  position:relative;
-}
-.card-back::after{
-  content:'';position:absolute;inset:4px;border:1px solid rgba(251,191,36,.35);border-radius:2px;
-}
+.card-front .suit{align-self:flex-end;font-size:.75rem;line-height:1}
+.card-back{background:repeating-linear-gradient(45deg,rgba(59,130,246,.18) 0 3px,transparent 3px 6px),repeating-linear-gradient(-45deg,rgba(59,130,246,.18) 0 3px,transparent 3px 6px),linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);border:1px solid var(--gold);transform:rotateY(0deg);position:relative}
+.card-back::after{content:'';position:absolute;inset:3px;border:1px solid rgba(251,191,36,.35);border-radius:2px}
 .card-container.glow-gold .card-front{box-shadow:0 0 20px var(--gold),0 0 40px rgba(251,191,36,.4);border-color:var(--gold)}
-.card-container.glow-rainbow .card-front{
-  box-shadow:0 0 30px #fbbf24,0 0 60px #f59e0b,0 0 90px #ef4444;border-color:#fbbf24;
-  animation:glowRainbow .6s ease-in-out infinite alternate;
-}
+.card-container.glow-rainbow .card-front{box-shadow:0 0 30px #fbbf24,0 0 60px #f59e0b,0 0 90px #ef4444;border-color:#fbbf24;animation:glowRainbow .6s ease-in-out infinite alternate}
 @keyframes glowRainbow{
   0%{box-shadow:0 0 20px #fbbf24,0 0 40px #f59e0b}
   100%{box-shadow:0 0 40px #fbbf24,0 0 80px #f59e0b,0 0 120px #ef4444}
 }
-.flying-card{
-  position:fixed;width:var(--card-w);height:var(--card-h);
-  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);
-  border:1px solid var(--gold);border-radius:4px;
-  z-index:999;pointer-events:none;
-  transition:all .25s cubic-bezier(.25,.8,.25,1);
-  box-shadow:0 6px 15px rgba(0,0,0,.7);
-}
-.flying-chip{
-  position:fixed;width:22px;height:22px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#fde68a,#f59e0b 40%,#92400e 100%);
-  border:2px solid #fcd34d;z-index:999;pointer-events:none;
-  box-shadow:0 4px 10px rgba(0,0,0,.6),inset 0 0 8px rgba(255,255,255,.3);
-  transition:all .5s cubic-bezier(.4,0,.2,1);
-  display:grid;place-items:center;font-size:8px;font-weight:900;color:#78350f;
-}
-/* ===== INFO BAR ===== */
-.info-bar{
-  width:100%;max-width:480px;padding:6px 12px;margin-top:4px;
-  background:var(--surface);border:1.5px solid var(--border);border-radius:12px;
-  display:flex;align-items:center;gap:10px;justify-content:space-between;
-  min-height:42px;
-}
-.hand-strength{
-  display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:800;color:var(--gold);
-  flex:1;min-width:0;
-}
+.flying-card{position:fixed;width:var(--card-w);height:var(--card-h);background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);border:1px solid var(--gold);border-radius:4px;z-index:999;pointer-events:none;transition:all .25s cubic-bezier(.25,.8,.25,1);box-shadow:0 6px 15px rgba(0,0,0,.7)}
+.flying-chip{position:fixed;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fde68a,#f59e0b 40%,#92400e 100%);border:2px solid #fcd34d;z-index:999;pointer-events:none;box-shadow:0 4px 10px rgba(0,0,0,.6),inset 0 0 8px rgba(255,255,255,.3);transition:all .5s cubic-bezier(.4,0,.2,1);display:grid;place-items:center;font-size:8px;font-weight:900;color:#78350f}
+
+/* INFO BAR */
+.info-bar{width:100%;max-width:460px;padding:6px 12px;margin-top:4px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;justify-content:space-between;min-height:40px;flex-shrink:0}
+.hand-strength{display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:800;color:var(--gold);flex:1;min-width:0}
 .hand-strength .strength-icon{font-size:1.1rem;flex-shrink:0}
-.hand-strength .strength-name{
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.hand-strength .strength-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hand-strength.strength-great{color:#4ade80}
 .hand-strength.strength-good{color:#60a5fa}
 .hand-strength.strength-ok{color:var(--gold)}
 .hand-strength.strength-bad{color:#f87171}
-.timer-bar{
-  width:80px;height:6px;background:#1e293b;border-radius:3px;overflow:hidden;flex-shrink:0;
-}
-.timer-fill{
-  height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#f59e0b);
-  transition:width 1s linear;border-radius:3px;
-}
+.timer-bar{width:80px;height:6px;background:#1e293b;border-radius:3px;overflow:hidden;flex-shrink:0}
+.timer-fill{height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#f59e0b);transition:width 1s linear;border-radius:3px}
 .timer-fill.warning{background:linear-gradient(90deg,#f59e0b,#ef4444)}
 .timer-fill.danger{background:#ef4444;animation:timerPulse .5s ease-in-out infinite alternate}
 @keyframes timerPulse{0%{opacity:1}100%{opacity:.5}}
-/* ===== CONTROLS ===== */
-.controls-area{width:100%;max-width:480px;display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:4px}
+
+/* CONTROLS */
+.controls-area{width:100%;max-width:460px;display:flex;flex-direction:column;gap:5px;align-items:center;margin-top:4px;flex-shrink:0}
 .action-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
-.btn{
-  padding:10px 0;border:none;border-radius:8px;
-  font-weight:800;font-size:.85rem;cursor:pointer;
-  transition:all .15s ease;box-shadow:0 3px 8px rgba(0,0,0,.5);
-  text-align:center;color:#fff;
-}
+.btn{padding:10px 0;border:none;border-radius:8px;font-weight:800;font-size:.82rem;cursor:pointer;transition:all .15s ease;box-shadow:0 3px 8px rgba(0,0,0,.5);text-align:center;color:#fff}
 .btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.35;cursor:not-allowed;filter:grayscale(1)}
 .btn-fold{background:#ef4444}
 .btn-check{background:#3b82f6}
 .btn-call{background:#10b981}
 .btn-raise{background:#f59e0b;flex:1;padding:11px 0}
-.btn-next{background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);grid-column:span 3;padding:12px 0;font-size:1rem;letter-spacing:.5px}
-.raise-control-group{display:flex;gap:5px;width:100%;align-items:center}
-.btn-step{background:var(--surface-2);color:#fff;border:1px solid rgba(255,255,255,.15);width:38px;height:40px;font-size:.9rem;font-weight:800;border-radius:8px;cursor:pointer;transition:all .15s}
+.btn-next{background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);grid-column:span 3;padding:12px 0;font-size:.95rem;letter-spacing:.5px}
+.raise-control-group{display:grid;grid-template-columns:42px 1fr 42px 1.2fr;gap:5px;width:100%;align-items:center}
+.btn-step{background:var(--surface-2);color:#fff;border:1px solid rgba(255,255,255,.15);height:40px;font-size:1rem;font-weight:800;border-radius:8px;cursor:pointer;transition:all .15s}
 .btn-step:hover{background:var(--border);color:var(--gold)}
-input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid var(--gold);font-weight:bold;text-align:center;background:var(--surface);color:var(--gold);font-size:.85rem;-moz-appearance:textfield}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type="number"]{height:40px;border-radius:8px;border:1px solid var(--gold);font-weight:bold;text-align:center;background:var(--surface);color:var(--gold);font-size:.9rem;-moz-appearance:textfield;width:100%}
+input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .raise-presets{display:flex;gap:4px;width:100%;justify-content:center;flex-wrap:wrap}
-.preset-btn{
-  padding:5px 11px;border-radius:8px;border:1.5px solid #334155;
-  background:var(--surface);color:var(--text-muted);
-  font-weight:700;font-size:.68rem;cursor:pointer;transition:all .15s;
-}
+.preset-btn{padding:5px 10px;border-radius:8px;border:1.5px solid #334155;background:var(--surface);color:var(--text-muted);font-weight:700;font-size:.66rem;cursor:pointer;transition:all .15s}
 .preset-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--surface-2)}
 .preset-btn.allin{border-color:#ef4444;color:#fca5a5}
 .preset-btn.allin:hover{border-color:#ef4444;color:#fff;background:#7f1d1d}
-/* ===== LOG ===== */
-.log-box{
-  width:100%;max-width:480px;height:70px;background:rgba(7,10,18,.95);
-  margin-top:4px;border-radius:8px;padding:6px 10px;overflow-y:auto;font-size:.72rem;
-  border:1px solid #1e293b;display:flex;flex-direction:column-reverse;
-}
+
+/* LOG */
+.log-box{width:100%;max-width:460px;height:60px;background:rgba(7,10,18,.95);margin-top:4px;border-radius:8px;padding:6px 10px;overflow-y:auto;font-size:.7rem;border:1px solid #1e293b;flex-shrink:0}
 .log-box::-webkit-scrollbar{width:4px}
 .log-box::-webkit-scrollbar-thumb{background:#334155;border-radius:2px}
-.log-line{margin-bottom:2px;color:#94a3b8}
+.log-line{margin-bottom:2px;color:#94a3b8;line-height:1.3}
 .log-line.gold{color:var(--gold);font-weight:bold}
 .log-line.alert{color:#f87171;font-weight:bold}
 .log-line.winner{color:#4ade80;font-weight:bold}
 .log-line.special{color:#f472b6;font-weight:bold}
 .log-line.achievement{color:#c084fc;font-weight:bold}
-/* ===== MODAL ===== */
-.modal-backdrop{
-  position:fixed;inset:0;background:rgba(2,6,23,.85);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  z-index:2000;display:grid;place-items:center;padding:16px;
-  opacity:0;visibility:hidden;transition:all .25s ease;
-}
+
+/* MODAL */
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.85);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:2000;display:grid;place-items:center;padding:16px;opacity:0;visibility:hidden;transition:all .25s ease}
 .modal-backdrop.open{opacity:1;visibility:visible}
-.modal-content{
-  background:linear-gradient(180deg,#0f172a 0%,#020617 100%);
-  border:1.5px solid var(--gold);border-radius:18px;padding:20px;
-  width:100%;max-width:440px;max-height:85vh;overflow-y:auto;
-  box-shadow:0 20px 60px rgba(0,0,0,.9),0 0 40px rgba(251,191,36,.15);
-  transform:scale(.95);transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-}
+.modal-content{background:linear-gradient(180deg,#0f172a 0%,#020617 100%);border:1.5px solid var(--gold);border-radius:18px;padding:20px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.9),0 0 40px rgba(251,191,36,.15);transform:scale(.95);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
 .modal-backdrop.open .modal-content{transform:scale(1)}
 .modal-content::-webkit-scrollbar{width:6px}
 .modal-content::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
@@ -314,7 +199,8 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 .modal-section li{margin-bottom:4px}
 .modal-section code{background:#1e293b;padding:1px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:.75rem;color:var(--gold)}
 .kbd{display:inline-block;padding:2px 8px;border-radius:5px;background:#1e293b;border:1px solid #475569;font-family:'Courier New',monospace;font-size:.72rem;font-weight:700;color:var(--gold);box-shadow:0 2px 0 #334155}
-/* ===== STATS ===== */
+
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
 .stat-card{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:12px;padding:12px;text-align:center}
 .stat-card .v{font-size:1.4rem;font-weight:900;color:var(--gold);font-family:'Courier New',monospace;line-height:1;font-variant-numeric:tabular-nums}
@@ -331,7 +217,8 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 .history-item-mini .result{font-weight:800}
 .history-item-mini.win .result{color:#4ade80}
 .history-item-mini.loss .result{color:#f87171}
-/* ===== ACHIEVEMENTS ===== */
+
+/* ACHIEVEMENTS */
 .achievements-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .ach-card{padding:10px 6px;border-radius:10px;text-align:center;background:#0a0f1e;border:1px solid #1e293b;transition:all .2s}
 .ach-card.unlocked{background:linear-gradient(135deg,#1e293b,#0f172a);border-color:var(--gold);box-shadow:0 0 12px rgba(251,191,36,.2)}
@@ -339,64 +226,55 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 .ach-icon{font-size:1.6rem;line-height:1;margin-bottom:4px}
 .ach-name{font-size:.6rem;font-weight:700;color:#cbd5e1;line-height:1.2}
 .ach-card.unlocked .ach-name{color:var(--gold)}
-/* ===== HAND RANKINGS ===== */
+
+/* HAND RANKINGS */
 .hand-ranks{display:flex;flex-direction:column;gap:4px}
 .hand-rank-item{display:flex;align-items:center;gap:10px;padding:6px 10px;background:#0a0f1e;border-radius:8px;border-left:3px solid var(--gold);font-size:.78rem}
 .hand-rank-item .rank-num{font-weight:900;color:var(--gold);min-width:24px}
 .hand-rank-item .rank-name{font-weight:700;color:#f8fafc}
-/* ===== TOAST ===== */
+
+/* TOAST */
 .toast-wrap{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:3000;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(92vw,400px)}
-.toast{
-  background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0f172a;
-  padding:10px 18px;border-radius:12px;font-weight:800;font-size:.82rem;
-  box-shadow:0 10px 30px rgba(251,191,36,.4),0 0 20px rgba(251,191,36,.3);
-  animation:toastIn .35s cubic-bezier(.34,1.56,.64,1);
-  display:flex;align-items:center;gap:10px;
-  border:2px solid #fcd34d;max-width:100%;
-}
+.toast{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0f172a;padding:10px 18px;border-radius:12px;font-weight:800;font-size:.82rem;box-shadow:0 10px 30px rgba(251,191,36,.4),0 0 20px rgba(251,191,36,.3);animation:toastIn .35s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:10px;border:2px solid #fcd34d;max-width:100%}
 .toast.info{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border-color:#60a5fa;box-shadow:0 10px 30px rgba(59,130,246,.4)}
 .toast.win{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-color:#34d399;box-shadow:0 10px 30px rgba(16,185,129,.4)}
 @keyframes toastIn{from{opacity:0;transform:translateY(-20px) scale(.9)}to{opacity:1;transform:none}}
-/* ===== CONFETTI & FIREWORKS ===== */
+
+/* CONFETTI / FIREWORKS */
 .confetti{position:fixed;width:10px;height:14px;z-index:9999;pointer-events:none;top:-20px;animation:confettiFall linear forwards}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0) scale(1);opacity:1}100%{transform:translateY(110vh) rotate(720deg) scale(.6);opacity:0}}
 .firework{position:fixed;pointer-events:none;width:8px;height:8px;border-radius:50%;animation:firework-burst .8s ease-out forwards;z-index:1000}
 @keyframes firework-burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 .flash-overlay{position:fixed;inset:0;background:radial-gradient(circle,rgba(251,191,36,.25) 0%,rgba(251,191,36,0) 70%);pointer-events:none;z-index:999;opacity:0;animation:flashPulse .6s ease-out forwards}
 @keyframes flashPulse{0%{opacity:1}100%{opacity:0}}
-/* ===== WINNER BANNER ===== */
-.winner-banner{
-  position:fixed;top:35%;left:50%;transform:translate(-50%,-50%) scale(.5);
-  z-index:2500;pointer-events:none;
-  padding:16px 32px;border-radius:20px;
-  background:linear-gradient(135deg,#fbbf24,#f59e0b,#ef4444);
-  color:#fff;font-weight:900;font-size:1.4rem;
-  text-shadow:0 2px 4px rgba(0,0,0,.3);
-  box-shadow:0 20px 60px rgba(251,191,36,.6),0 0 100px rgba(251,191,36,.4);
-  border:3px solid #fff;letter-spacing:1px;
-  animation:winnerPop 1.2s cubic-bezier(.34,1.56,.64,1) forwards;
-  white-space:nowrap;
-}
+
+/* WINNER BANNER */
+.winner-banner{position:fixed;top:35%;left:50%;transform:translate(-50%,-50%) scale(.5);z-index:2500;pointer-events:none;padding:14px 28px;border-radius:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b,#ef4444);color:#fff;font-weight:900;font-size:1.3rem;text-shadow:0 2px 4px rgba(0,0,0,.3);box-shadow:0 20px 60px rgba(251,191,36,.6),0 0 100px rgba(251,191,36,.4);border:3px solid #fff;letter-spacing:1px;animation:winnerPop 1.2s cubic-bezier(.34,1.56,.64,1) forwards;white-space:nowrap}
 @keyframes winnerPop{
   0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
   30%{transform:translate(-50%,-50%) scale(1.15);opacity:1}
   70%{transform:translate(-50%,-50%) scale(1);opacity:1}
   100%{transform:translate(-50%,-50%) scale(1);opacity:0}
 }
-/* ===== FOOTER ===== */
-.footer{width:100%;max-width:480px;text-align:center;padding:10px 0 6px 0;font-size:.7rem;font-weight:600;letter-spacing:.5px;margin-top:4px}
+
+/* FOOTER */
+.footer{width:100%;max-width:460px;text-align:center;padding:8px 0 4px;font-size:.68rem;font-weight:600;letter-spacing:.5px;margin-top:2px;flex-shrink:0}
 .rainbow-text{background:linear-gradient(270deg,#ff6b6b,#feca57,#48dbfb,#ff9ff3,#54a0ff,#5f27cd);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rainbow 4s ease-in-out infinite;display:inline-block}
 @keyframes rainbow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
 @media (max-width:480px){
-  .btn{font-size:.78rem}
+  .btn{font-size:.75rem;padding:9px 0}
   .stat-card .v{font-size:1.15rem}
   .session-badge{display:none}
+  .raise-control-group{grid-template-columns:38px 1fr 38px 1.2fr}
+}
+@media (max-height:700px){
+  .poker-table{height:340px}
 }
 </style>
 </head>
 <body>
 
-<!-- TOP TOOLBAR -->
 <div class="top-toolbar">
   <div class="toolbar-left">
     <button class="toolbar-btn" id="btn-sound" title="Bật/tắt âm thanh">🔊</button>
@@ -413,16 +291,14 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
   </div>
 </div>
 
-<!-- HEADER -->
 <div class="casino-header">
   <div class="casino-title">♠️ Rix Hold'em Pro ♠️</div>
-  <div>
+  <div class="badges-row">
     <span class="level-badge" id="level-badge">⭐ Level 1 · 0 XP</span>
     <span class="session-badge" id="session-badge"></span>
   </div>
 </div>
 
-<!-- TABLE -->
 <div class="table-container">
   <div class="poker-table" id="poker-table">
     <div class="table-center">
@@ -481,7 +357,6 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
   </div>
 </div>
 
-<!-- INFO BAR -->
 <div class="info-bar">
   <div class="hand-strength" id="hand-strength">
     <span class="strength-icon">🃏</span>
@@ -492,11 +367,10 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
   </div>
 </div>
 
-<!-- CONTROLS -->
 <div class="controls-area">
   <div class="action-btns">
-    <button class="btn btn-fold" id="btn-fold" onclick="handleHumanChoice('fold')">Fold <span style="opacity:.7;font-size:.7rem">(F)</span></button>
-    <button class="btn btn-check" id="btn-check" onclick="handleHumanChoice('check')">Check <span style="opacity:.7;font-size:.7rem">(C)</span></button>
+    <button class="btn btn-fold" id="btn-fold" onclick="handleHumanChoice('fold')">Fold <span style="opacity:.6;font-size:.7rem">(F)</span></button>
+    <button class="btn btn-check" id="btn-check" onclick="handleHumanChoice('check')">Check <span style="opacity:.6;font-size:.7rem">(C)</span></button>
     <button class="btn btn-call" id="btn-call" onclick="handleHumanChoice('call')">Call</button>
   </div>
   <div class="raise-presets">
@@ -509,20 +383,17 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
     <button class="btn-step" onclick="adjustRaiseInput(-10)">−</button>
     <input type="number" id="raise-amount" value="10" min="10" step="10">
     <button class="btn-step" onclick="adjustRaiseInput(10)">+</button>
-    <button class="btn btn-raise" id="btn-raise" onclick="handleHumanChoice('raise')">Raise <span style="opacity:.7;font-size:.7rem">(R)</span></button>
+    <button class="btn btn-raise" id="btn-raise" onclick="handleHumanChoice('raise')">Raise <span style="opacity:.6;font-size:.7rem">(R)</span></button>
   </div>
-  <button class="btn btn-next" id="btn-next" onclick="startNewHand()" style="display:none;">Ván Tiếp ➔ <span style="opacity:.7;font-size:.7rem">(Space)</span></button>
+  <button class="btn btn-next" id="btn-next" onclick="startNewHand()" style="display:none;">Ván Tiếp ➔ <span style="opacity:.6;font-size:.7rem">(Space)</span></button>
 </div>
 
-<!-- LOG -->
 <div class="log-box" id="log-box"></div>
 
-<!-- FOOTER -->
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.02</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.03</span> from bao with love ♡</span>
 </div>
 
-<!-- TOAST -->
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <!-- HELP MODAL -->
@@ -558,12 +429,12 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
       </ul>
     </div>
     <div class="modal-section">
-      <h4>💡 Mẹo chơi</h4>
+      <h4>💡 Mẹo</h4>
       <ul>
         <li>Xem <strong>hand strength</strong> màu sắc để biết bài mạnh/yếu</li>
         <li>Timer 30s — hết giờ auto-fold</li>
         <li>Bot có bluff — đừng tin lời nói!</li>
-        <li>Thắng ván để nhận XP, lên level</li>
+        <li>Khi tất cả all-in → tự động chạy đến showdown</li>
       </ul>
     </div>
   </div>
@@ -595,7 +466,7 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 /* ================================================================
    0. VERSION
 ===============================================================*/
-const APP_VERSION = '150926.02';
+const APP_VERSION = '150926.03';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -605,12 +476,9 @@ document.addEventListener('DOMContentLoaded', () => {
    1. SOUND
 ===============================================================*/
 const Sound = {
-  ctx: null,
-  enabled: true,
+  ctx: null, enabled: true,
   init(){
-    if(!this.ctx){
-      try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
-    }
+    if(!this.ctx){ try{ this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){} }
     if(this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
   },
   _play(freq, dur, type = 'sine', vol = 0.15, startAt = null){
@@ -634,7 +502,6 @@ const Sound = {
   playWin(){ [523.25,659.25,783.99,1046.50].forEach((f,i)=> this._play(f, 0.22, 'sine', 0.2, this.ctx ? this.ctx.currentTime + i*0.1 : null)); },
   playShake(){ this._play(60, 0.15, 'sawtooth', 0.15); },
   playHappy(){ [523,659,784].forEach((f,i)=> this._play(f, 0.12, 'sine', 0.15, this.ctx ? this.ctx.currentTime + i*0.08 : null)); },
-  playAngry(){ this._play(200, 0.2, 'square', 0.15); },
   playAllIn(){
     if(!this.enabled) return;
     this.init();
@@ -669,12 +536,10 @@ function shuffleArray(arr){
   }
   return a;
 }
-function vibrate(p){
-  try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){}
-}
+function vibrate(p){ try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
 
 /* ================================================================
-   3. TOAST
+   3. TOAST / CONFETTI / FIREWORKS
 ===============================================================*/
 function showToast(msg, type = ''){
   const wrap = $('toast-wrap');
@@ -688,10 +553,6 @@ function showToast(msg, type = ''){
     setTimeout(() => el.remove(), 300);
   }, 2800);
 }
-
-/* ================================================================
-   4. CONFETTI & FIREWORKS
-===============================================================*/
 function createConfetti(count = 60){
   const colors = ['#fbbf24','#f59e0b','#ef4444','#3b82f6','#10b981','#8b5cf6','#ec4899','#f472b6'];
   for(let i = 0; i < count; i++){
@@ -708,7 +569,6 @@ function createConfetti(count = 60){
     setTimeout(() => el.remove(), 4000);
   }
 }
-
 function showWinnerBanner(text){
   const el = document.createElement('div');
   el.className = 'winner-banner';
@@ -716,9 +576,12 @@ function showWinnerBanner(text){
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1300);
 }
+function cleanupStaleFlyers(){
+  document.querySelectorAll('.flying-card,.flying-chip,.confetti,.firework,.winner-banner,.flash-overlay').forEach(el => el.remove());
+}
 
 /* ================================================================
-   5. CELEB POOL
+   4. CELEB POOL
 ===============================================================*/
 const CELEB_POOL = [
   {name:"Cristiano Ronaldo",style:"aggressive"},{name:"Lionel Messi",style:"smart"},
@@ -743,16 +606,16 @@ let benchPool = shuffledCelebs.slice(3);
 function getRandomBotStack(){ return Math.floor(Math.random()*151 + 50) * 10; }
 
 /* ================================================================
-   6. BOT QUOTES
+   5. BOT QUOTES
 ===============================================================*/
 const BOT_QUOTES = {
-  raise: ['Theo đây! 🔥','Raise mạnh!','Sợ chưa? 😏','Chơi lớn!','All-in tinh thần!'],
-  call:  ['Theo.','Call đây.','Ừm, theo.','Được, call.','Chấp nhận.'],
-  check: ['Check.','Bình thường.','Nhẹ nhàng.','Chờ xem.','Để xem sao.'],
-  fold:  ['Bỏ vậy.','Bài xấu quá.','Fold thôi.','Không đủ tự tin.','Nhường ván này.'],
-  bluff: ['Bài tao mạnh lắm!','Cẩn thận đấy!','Bluff đấy 😏','Sợ thì fold đi!'],
-  win:   ['Cảm ơn nhé! 🎉','Dễ ợt!','Biết ngay mà!','Hên thôi 😜','Chuẩn bài!'],
-  lose:  ['Đen thật!','Ván sau nha.','Không phục!','Ừ thì thua.']
+  raise: ['Theo đây! 🔥','Raise mạnh!','Sợ chưa? 😏','Chơi lớn!'],
+  call:  ['Theo.','Call đây.','Ừm, theo.','Được, call.'],
+  check: ['Check.','Bình thường.','Nhẹ nhàng.','Chờ xem.'],
+  fold:  ['Bỏ vậy.','Bài xấu quá.','Fold thôi.','Không đủ tự tin.'],
+  bluff: ['Bài tao mạnh lắm!','Cẩn thận đấy!','Bluff đấy 😏'],
+  win:   ['Cảm ơn nhé! 🎉','Dễ ợt!','Biết ngay mà!','Hên thôi 😜'],
+  lose:  ['Đen thật!','Ván sau nha.','Không phục!']
 };
 function botSay(pIdx, type){
   const p = players[pIdx];
@@ -764,12 +627,12 @@ function botSay(pIdx, type){
 }
 
 /* ================================================================
-   7. PERSISTENT STATE
+   6. PERSISTENT STATE
 ===============================================================*/
-const LS_STATS = 'rix_poker_stats_v4';
-const LS_ACH = 'rix_poker_ach_v4';
-const LS_SETTINGS = 'rix_poker_settings_v4';
-const SAVE_KEY = 'rix_poker_save_v4';
+const LS_STATS = 'rix_poker_stats_v5';
+const LS_ACH = 'rix_poker_ach_v5';
+const LS_SETTINGS = 'rix_poker_settings_v5';
+const SAVE_KEY = 'rix_poker_save_v5';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
@@ -782,29 +645,13 @@ const defaultStats = {
 };
 const defaultSettings = { sound: true, theme: 'dark' };
 
-function loadStats(){
-  try {
-    const raw = localStorage.getItem(LS_STATS);
-    return raw ? { ...defaultStats, ...JSON.parse(raw) } : { ...defaultStats };
-  } catch(e){ return { ...defaultStats }; }
-}
-function loadAch(){
-  try {
-    const raw = localStorage.getItem(LS_ACH);
-    return raw ? JSON.parse(raw) : {};
-  } catch(e){ return {}; }
-}
-function loadSettings(){
-  try {
-    const raw = localStorage.getItem(LS_SETTINGS);
-    return raw ? { ...defaultSettings, ...JSON.parse(raw) } : { ...defaultSettings };
-  } catch(e){ return { ...defaultSettings }; }
-}
+function loadStats(){ try{ const raw = localStorage.getItem(LS_STATS); return raw ? { ...defaultStats, ...JSON.parse(raw) } : { ...defaultStats }; } catch(e){ return { ...defaultStats }; } }
+function loadAch(){ try{ const raw = localStorage.getItem(LS_ACH); return raw ? JSON.parse(raw) : {}; } catch(e){ return {}; } }
+function loadSettings(){ try{ const raw = localStorage.getItem(LS_SETTINGS); return raw ? { ...defaultSettings, ...JSON.parse(raw) } : { ...defaultSettings }; } catch(e){ return { ...defaultSettings }; } }
 
 let stats = loadStats();
 let achievements = loadAch();
 let settings = loadSettings();
-// Session stats
 let sessionStats = { wins: 0, losses: 0, net: 0, startingChips: 1000 };
 
 function saveStats(){ try{ localStorage.setItem(LS_STATS, JSON.stringify(stats)); }catch(e){} }
@@ -812,37 +659,31 @@ function saveAch(){ try{ localStorage.setItem(LS_ACH, JSON.stringify(achievement
 function saveSettings(){ try{ localStorage.setItem(LS_SETTINGS, JSON.stringify(settings)); }catch(e){} }
 
 /* ================================================================
-   8. ACHIEVEMENTS
+   7. ACHIEVEMENTS
 ===============================================================*/
 const ACHIEVEMENTS = [
-  {id:'first_win',    icon:'🥇', name:'Ván đầu thắng',    check:s => s.wins >= 1},
-  {id:'big_pot',      icon:'💰', name:'Pot 1000+',        check:s => s.biggestPot >= 1000},
-  {id:'royal',        icon:'👑', name:'Royal Flush',      check:s => s.royalFlushCount >= 1},
-  {id:'streak3',      icon:'🔥', name:'Chuỗi 3 thắng',    check:s => s.bestStreak >= 3},
-  {id:'streak5',      icon:'💥', name:'Chuỗi 5 thắng',    check:s => s.bestStreak >= 5},
-  {id:'level5',       icon:'⭐', name:'Level 5',          check:s => s.level >= 5},
-  {id:'allin_win',    icon:'🎰', name:'All-in thắng',     check:s => s.allInWins >= 1},
-  {id:'rich',         icon:'💎', name:'Triệu phú',        check:s => s.peakChips >= 1000000},
-  {id:'games100',     icon:'🎯', name:'Chơi 100 ván',     check:s => s.gamesPlayed >= 100}
+  {id:'first_win', icon:'🥇', name:'Ván đầu thắng', check:s => s.wins >= 1},
+  {id:'big_pot', icon:'💰', name:'Pot 1000+', check:s => s.biggestPot >= 1000},
+  {id:'royal', icon:'👑', name:'Royal Flush', check:s => s.royalFlushCount >= 1},
+  {id:'streak3', icon:'🔥', name:'Chuỗi 3 thắng', check:s => s.bestStreak >= 3},
+  {id:'streak5', icon:'💥', name:'Chuỗi 5 thắng', check:s => s.bestStreak >= 5},
+  {id:'level5', icon:'⭐', name:'Level 5', check:s => s.level >= 5},
+  {id:'allin_win', icon:'🎰', name:'All-in thắng', check:s => s.allInWins >= 1},
+  {id:'rich', icon:'💎', name:'Triệu phú', check:s => s.peakChips >= 1000000},
+  {id:'games100', icon:'🎯', name:'Chơi 100 ván', check:s => s.gamesPlayed >= 100}
 ];
-
 function checkAchievements(){
   let newlyUnlocked = [];
   ACHIEVEMENTS.forEach(a => {
-    if(!achievements[a.id] && a.check(stats)){
-      achievements[a.id] = Date.now();
-      newlyUnlocked.push(a);
-    }
+    if(!achievements[a.id] && a.check(stats)){ achievements[a.id] = Date.now(); newlyUnlocked.push(a); }
   });
   if(newlyUnlocked.length){
-    saveAch();
-    updateAchBadge();
+    saveAch(); updateAchBadge();
     newlyUnlocked.forEach((a, i) => {
       setTimeout(() => {
         showToast(`${a.icon} Mở khóa: ${a.name}`, 'win');
         log(`🏆 THÀNH TỰU: ${a.name}`, 'achievement');
-        Sound.playHappy();
-        vibrate([50, 30, 50, 30, 100]);
+        Sound.playHappy(); vibrate([50, 30, 50, 30, 100]);
       }, i * 900);
     });
     createConfetti(40);
@@ -856,34 +697,22 @@ function updateAchBadge(){
 }
 
 /* ================================================================
-   9. LEVEL & XP
+   8. LEVEL / XP
 ===============================================================*/
-function xpForLevel(lv){
-  return 50 + (lv - 1) * 30;
-}
+function xpForLevel(lv){ return 50 + (lv - 1) * 30; }
 function addXP(amount){
   stats.xp += amount;
   let leveled = false;
-  while(stats.xp >= xpForLevel(stats.level)){
-    stats.xp -= xpForLevel(stats.level);
-    stats.level++;
-    leveled = true;
-  }
-  saveStats();
-  updateLevelBadge();
+  while(stats.xp >= xpForLevel(stats.level)){ stats.xp -= xpForLevel(stats.level); stats.level++; leveled = true; }
+  saveStats(); updateLevelBadge();
   if(leveled){
     showToast(`⭐ LÊN LEVEL ${stats.level}!`, 'win');
     log(`⭐ Bạn đã lên Level ${stats.level}!`, 'achievement');
-    Sound.playBigWin();
-    vibrate([80, 40, 80, 40, 200]);
-    createConfetti(60);
+    Sound.playBigWin(); vibrate([80, 40, 80, 40, 200]); createConfetti(60);
   }
   checkAchievements();
 }
-function updateLevelBadge(){
-  const el = $('level-badge');
-  if(el) el.textContent = `⭐ Level ${stats.level} · ${stats.xp} XP`;
-}
+function updateLevelBadge(){ const el = $('level-badge'); if(el) el.textContent = `⭐ Level ${stats.level} · ${stats.xp} XP`; }
 function updateSessionBadge(){
   const el = $('session-badge');
   if(!el) return;
@@ -894,7 +723,7 @@ function updateSessionBadge(){
 }
 
 /* ================================================================
-   10. MODAL HELPERS
+   9. MODAL HELPERS
 ===============================================================*/
 function openModal(id){ const m = $(id); if(m) m.classList.add('open'); }
 function closeModal(id){ const m = $(id); if(m) m.classList.remove('open'); }
@@ -903,7 +732,7 @@ document.querySelectorAll('.modal-backdrop').forEach(m => {
 });
 
 /* ================================================================
-   11. GAME STATE
+   10. GAME STATE
 ===============================================================*/
 const HUMAN_START_CHIPS = 1000;
 const SMALL_BLIND = 5;
@@ -925,9 +754,10 @@ let fireworksRunning = false;
 let botTilt = 0;
 let turnTimerId = null;
 let turnTimeLeft = 0;
+let isProcessing = false; // guard against concurrent turns
 
 /* ================================================================
-   12. UI
+   11. LOG / SPEECH
 ===============================================================*/
 function log(msg, type = ''){
   const box = $('log-box');
@@ -935,8 +765,11 @@ function log(msg, type = ''){
   const line = document.createElement('div');
   line.className = `log-line ${type}`;
   line.innerHTML = msg;
-  box.insertBefore(line, box.firstChild);
-  while(box.children.length > 80) box.removeChild(box.lastChild);
+  box.appendChild(line);
+  // keep last 60 lines
+  while(box.children.length > 60) box.removeChild(box.firstChild);
+  // scroll to bottom
+  box.scrollTop = box.scrollHeight;
 }
 function showSpeech(pIdx, text){
   const b = $(`bubble-${pIdx}`);
@@ -945,6 +778,10 @@ function showSpeech(pIdx, text){
   b.classList.add('show');
   setTimeout(() => b.classList.remove('show'), 1800);
 }
+
+/* ================================================================
+   12. RAISE INPUT
+===============================================================*/
 function adjustRaiseInput(delta){
   const input = $('raise-amount');
   let val = parseInt(input.value) || STRICT_MIN_RAISE;
@@ -972,6 +809,10 @@ function setRaisePreset(type){
   Sound.playChip();
   vibrate(15);
 }
+
+/* ================================================================
+   13. CHIP FLY / POT
+===============================================================*/
 function chipFlyToPot(fromIdx){
   const from = $(`seat-${fromIdx}`);
   const potEl = $('pot-display');
@@ -1003,7 +844,7 @@ function updatePotBox(animate){
 }
 
 /* ================================================================
-   13. DECK & CARDS
+   14. DECK
 ===============================================================*/
 function createDeck(){
   const SUITS = ['♠','♥','♦','♣'];
@@ -1042,21 +883,22 @@ async function animateDealCard(targetElemId){
   if(!source || !target) return;
   const sR = source.getBoundingClientRect();
   const tR = target.getBoundingClientRect();
+  if(sR.width === 0 || tR.width === 0) return;
   const flyer = document.createElement('div');
   flyer.className = 'flying-card';
-  flyer.style.left = (sR.left + sR.width/2 - 16) + 'px';
-  flyer.style.top = (sR.top + sR.height/2 - 22) + 'px';
+  flyer.style.left = (sR.left + sR.width/2 - 18) + 'px';
+  flyer.style.top = (sR.top + sR.height/2 - 25) + 'px';
   document.body.appendChild(flyer);
   await sleep(15);
-  flyer.style.left = (tR.left + tR.width/2 - 16) + 'px';
-  flyer.style.top = (tR.top + tR.height/2 - 22) + 'px';
+  flyer.style.left = (tR.left + tR.width/2 - 18) + 'px';
+  flyer.style.top = (tR.top + tR.height/2 - 25) + 'px';
   flyer.style.transform = 'scale(1.02) rotate(360deg)';
   await sleep(200);
   if(flyer.parentNode) flyer.parentNode.removeChild(flyer);
 }
 
 /* ================================================================
-   14. HAND STRENGTH
+   15. HAND STRENGTH
 ===============================================================*/
 function describeHoleCards(hole){
   if(!hole || hole.length < 2) return null;
@@ -1122,7 +964,7 @@ function updateHandStrength(){
 }
 
 /* ================================================================
-   15. TURN TIMER
+   16. TURN TIMER
 ===============================================================*/
 function startTurnTimer(){
   stopTurnTimer();
@@ -1146,13 +988,8 @@ function startTurnTimer(){
       stopTurnTimer();
       if(isHumanTurnWaiting){
         const diff = currentHighestBet - players[0].currentBet;
-        if(diff === 0){
-          log('⏱️ Hết giờ — auto CHECK', 'alert');
-          handleHumanChoice('check');
-        } else {
-          log('⏱️ Hết giờ — auto FOLD', 'alert');
-          handleHumanChoice('fold');
-        }
+        if(diff === 0){ log('⏱️ Hết giờ — auto CHECK', 'alert'); handleHumanChoice('check'); }
+        else { log('⏱️ Hết giờ — auto FOLD', 'alert'); handleHumanChoice('fold'); }
       }
     }
   }, 1000);
@@ -1164,7 +1001,7 @@ function stopTurnTimer(){
 }
 
 /* ================================================================
-   16. UI UPDATE
+   17. UI UPDATE — FIXED
 ===============================================================*/
 function updateUI(){
   updatePotBox(false);
@@ -1178,7 +1015,7 @@ function updateUI(){
     if(chipsEl) chipsEl.innerText = fmt(p.chips);
     if(dEl) dEl.style.display = (dealerIdx === i) ? 'flex' : 'none';
 
-    // Position badge — FIX: dùng class pb-* không conflict với .btn
+    // Position badge — FIX: dùng class pb-*
     if(posEl){
       posEl.style.display = 'none';
       posEl.className = 'position-badge';
@@ -1191,7 +1028,7 @@ function updateUI(){
       }
     }
 
-    // Bet amount badge
+    // Bet amount
     if(betEl){
       if(p.currentBet > 0){
         betEl.classList.add('show');
@@ -1201,13 +1038,19 @@ function updateUI(){
       }
     }
 
+    // Cards — FIX: toggle has-cards class
     const cc = $(`cards-${i}`);
     if(cc){
       cc.innerHTML = '';
-      p.hand.forEach(c => {
-        const show = p.isHuman || revealAllHands || gameStage === 'SHOWDOWN' || gameStage === 'END';
-        cc.appendChild(create3DCardElement(c, show));
-      });
+      if(p.hand && p.hand.length > 0){
+        cc.classList.add('has-cards');
+        p.hand.forEach(c => {
+          const show = p.isHuman || revealAllHands || gameStage === 'SHOWDOWN' || gameStage === 'END';
+          cc.appendChild(create3DCardElement(c, show));
+        });
+      } else {
+        cc.classList.remove('has-cards');
+      }
     }
     const seatEl = $(`seat-${i}`);
     if(seatEl){
@@ -1235,7 +1078,6 @@ function updateUI(){
   $('btn-raise').disabled = !isHumanTurn || isGameEnd;
   $('btn-next').style.display = isGameEnd ? 'block' : 'none';
 
-  // Show call amount on button
   const callBtn = $('btn-call');
   if(callBtn){
     if(humanDiff > 0 && isHumanTurn){
@@ -1267,8 +1109,7 @@ function checkBustOuts(){
       if(benchPool.length > 0){
         const newC = benchPool.shift();
         benchPool.push({name:p.name, style:p.style});
-        p.name = newC.name;
-        p.style = newC.style;
+        p.name = newC.name; p.style = newC.style;
         p.chips = getRandomBotStack();
         p.allIn = false; p.tilt = 0;
         log(`✨ ${newC.name} vào bàn với ${fmt(p.chips)}!`, 'gold');
@@ -1286,7 +1127,7 @@ function checkBustOuts(){
 }
 
 /* ================================================================
-   17. POKER EVALUATOR
+   18. POKER EVALUATOR
 ===============================================================*/
 function getKCombinations(set, k){
   if(k === 0 || set.length < k) return [[]];
@@ -1300,11 +1141,8 @@ function evaluate5Cards(cards){
   let rawRanks = cards.map(c => c.rank).sort((a,b) => b-a);
   let isStraight = false, straightRanks = [];
   if(new Set(rawRanks).size === 5){
-    if(rawRanks[0] - rawRanks[4] === 4){
-      isStraight = true; straightRanks = [...rawRanks];
-    } else if(rawRanks[0] === 14 && rawRanks[1] === 5 && rawRanks[2] === 4 && rawRanks[3] === 3 && rawRanks[4] === 2){
-      isStraight = true; straightRanks = [5,4,3,2,1];
-    }
+    if(rawRanks[0] - rawRanks[4] === 4){ isStraight = true; straightRanks = [...rawRanks]; }
+    else if(rawRanks[0] === 14 && rawRanks[1] === 5 && rawRanks[2] === 4 && rawRanks[3] === 3 && rawRanks[4] === 2){ isStraight = true; straightRanks = [5,4,3,2,1]; }
   }
   const counts = {};
   rawRanks.forEach(r => counts[r] = (counts[r] || 0) + 1);
@@ -1314,11 +1152,8 @@ function evaluate5Cards(cards){
   });
   const freqs = uniqueRanks.map(r => counts[r]);
   let category = 1, name = "Mậu Thần", orderedRanks = [];
-  if(isFlush && isStraight){
-    category = 9;
-    name = straightRanks[0] === 14 ? "Royal Flush" : "Thùng Phá Sảnh";
-    orderedRanks = straightRanks;
-  } else if(freqs[0] === 4){ category = 8; name = "Tứ Quý"; orderedRanks = uniqueRanks; }
+  if(isFlush && isStraight){ category = 9; name = straightRanks[0] === 14 ? "Royal Flush" : "Thùng Phá Sảnh"; orderedRanks = straightRanks; }
+  else if(freqs[0] === 4){ category = 8; name = "Tứ Quý"; orderedRanks = uniqueRanks; }
   else if(freqs[0] === 3 && freqs[1] === 2){ category = 7; name = "Cù Lũ"; orderedRanks = uniqueRanks; }
   else if(isFlush){ category = 6; name = "Thùng"; orderedRanks = rawRanks; }
   else if(isStraight){ category = 5; name = "Sảnh"; orderedRanks = straightRanks; }
@@ -1335,17 +1170,13 @@ function evaluate7Cards(cards){
   const combos = getKCombinations(cards, 5);
   for(const combo of combos){
     const res = evaluate5Cards(combo);
-    if(res.score > bestScore){
-      bestScore = res.score;
-      bestName = res.name;
-      bestCategory = res.category;
-    }
+    if(res.score > bestScore){ bestScore = res.score; bestName = res.name; bestCategory = res.category; }
   }
   return { score: bestScore, name: bestName, category: bestCategory };
 }
 
 /* ================================================================
-   18. BOT AI
+   19. BOT AI
 ===============================================================*/
 function evaluateHandStrength(p){
   if(gameStage === 'PREFLOP'){
@@ -1388,8 +1219,8 @@ function impliedOddsFactor(p){
 async function simulateAITurn(p){
   const emotions = ["🧐","🤔","😏","🤫","😤","🥶","🔥"];
   showSpeech(p.id, emotions[Math.floor(Math.random()*emotions.length)] + ' Đang tính...');
-  let thinkTime = 800 + Math.random()*1200;
-  if(currentHighestBet > p.currentBet * 2) thinkTime += 700;
+  let thinkTime = 700 + Math.random()*900;
+  if(currentHighestBet > p.currentBet * 2) thinkTime += 500;
   await sleep(thinkTime);
 
   const diff = currentHighestBet - p.currentBet;
@@ -1428,13 +1259,6 @@ async function simulateAITurn(p){
 
   let choice = 'check';
 
-  if(p.allIn){
-    p.hasActed = true;
-    activeTurnIdx = (activeTurnIdx + 1) % 4;
-    runTurnEngine();
-    return;
-  }
-
   if(slowPlay){
     choice = diff > 0 ? 'call' : 'check';
   } else if(isCbet){
@@ -1462,30 +1286,15 @@ async function simulateAITurn(p){
 
   if(diff > 0){
     if(adjustedStrength < effectiveOdds - 0.08 && adjustedStrength < 0.35) choice = 'fold';
-    else if(adjustedStrength > 0.78){
-      if(Math.random() < 0.55 || isShort) choice = 'raise';
-      else choice = 'call';
-    } else if(adjustedStrength > 0.55){
-      if(Math.random() < 0.20 && (style === 'aggressive' || style === 'wild')) choice = 'raise';
-      else choice = 'call';
-    } else if(adjustedStrength >= effectiveOdds - 0.05) choice = 'call';
-    else if(Math.random() < bluffThreshold && diff < p.chips * 0.18){
-      choice = 'raise';
-      botSay(p.id, 'bluff');
-    } else choice = 'fold';
+    else if(adjustedStrength > 0.78){ choice = (Math.random() < 0.55 || isShort) ? 'raise' : 'call'; }
+    else if(adjustedStrength > 0.55){ choice = (Math.random() < 0.20 && (style === 'aggressive' || style === 'wild')) ? 'raise' : 'call'; }
+    else if(adjustedStrength >= effectiveOdds - 0.05) choice = 'call';
+    else if(Math.random() < bluffThreshold && diff < p.chips * 0.18){ choice = 'raise'; botSay(p.id, 'bluff'); }
+    else choice = 'fold';
   } else {
-    if(adjustedStrength > 0.68){
-      if(Math.random() < 0.45 || (isShort && adjustedStrength > 0.6)) choice = 'raise';
-      else choice = 'check';
-    } else if(adjustedStrength > 0.40){
-      if(Math.random() < 0.12 && (style === 'aggressive' || style === 'wild')) choice = 'raise';
-      else choice = 'check';
-    } else {
-      if(Math.random() < bluffThreshold * 0.5){
-        choice = 'raise';
-        botSay(p.id, 'bluff');
-      } else choice = 'check';
-    }
+    if(adjustedStrength > 0.68){ choice = (Math.random() < 0.45 || (isShort && adjustedStrength > 0.6)) ? 'raise' : 'check'; }
+    else if(adjustedStrength > 0.40){ choice = (Math.random() < 0.12 && (style === 'aggressive' || style === 'wild')) ? 'raise' : 'check'; }
+    else { if(Math.random() < bluffThreshold * 0.5){ choice = 'raise'; botSay(p.id, 'bluff'); } else choice = 'check'; }
   }
 
   if(choice === 'raise'){
@@ -1521,13 +1330,11 @@ async function simulateAITurn(p){
   if(choice === 'fold'){
     p.folded = true;
     showSpeech(p.id, "Fold 🏳️");
-    Sound.playFold();
-    botSay(p.id, 'fold');
+    Sound.playFold(); botSay(p.id, 'fold');
     log(`${p.name} Fold.`);
   } else if(choice === 'check'){
     showSpeech(p.id, "Check ✊");
-    Sound.playKnock();
-    botSay(p.id, 'check');
+    Sound.playKnock(); botSay(p.id, 'check');
     log(`${p.name} Check.`);
   } else if(choice === 'call'){
     const callAmt = Math.min(p.chips, diff);
@@ -1545,7 +1352,7 @@ async function simulateAITurn(p){
 }
 
 /* ================================================================
-   19. CORE
+   20. CORE: POST BET / SIDE POTS
 ===============================================================*/
 function postBet(pIdx, amount){
   const actual = Math.min(amount, players[pIdx].chips);
@@ -1598,70 +1405,97 @@ function distributePots(winners){
 }
 
 /* ================================================================
-   20. TURN ENGINE
+   21. TURN ENGINE — FIXED FOR ALL-IN EDGE CASES
 ===============================================================*/
 async function runTurnEngine(){
-  if(activeTurnIdx !== 0) raiseInputUserChanged = false;
-  updateUI();
+  if(isProcessing) return;
+  isProcessing = true;
+  try{
+    if(activeTurnIdx !== 0) raiseInputUserChanged = false;
+    updateUI();
 
-  const remaining = players.filter(p => !p.folded);
-  if(remaining.length === 1){
-    const winner = remaining[0];
-    if(sidePots.length === 0) buildSidePots();
-    let totalWin = 0;
-    for(let p of sidePots){
-      if(p.eligiblePlayers.includes(winner.id)){ winner.chips += p.amount; totalWin += p.amount; }
+    // Only 1 non-folded player left → they win
+    const remaining = players.filter(p => !p.folded);
+    if(remaining.length === 1){
+      const winner = remaining[0];
+      if(sidePots.length === 0) buildSidePots();
+      let totalWin = 0;
+      for(let p of sidePots){
+        if(p.eligiblePlayers.includes(winner.id)){ winner.chips += p.amount; totalWin += p.amount; }
+      }
+      if(totalWin === 0 && pot > 0){ winner.chips += pot; totalWin = pot; }
+      pot = 0;
+      revealAllHands = true;
+      log(`🏆 ${winner.name} THẮNG POT ${fmtFull(totalWin)} (fold)!`, 'winner');
+      $('seat-' + winner.id).classList.add('winner');
+      showWinnerEffects(winner.id);
+      showWinnerBanner(winner.isHuman ? `🏆 BẠN THẮNG ${fmt(totalWin)}!` : `🏆 ${winner.name} THẮNG!`);
+      gameStage = 'END';
+      endHandStats(winner.id, totalWin);
+      updateUI();
+      saveGame();
+      return;
     }
-    if(totalWin === 0 && pot > 0){ winner.chips += pot; totalWin = pot; }
-    pot = 0;
-    revealAllHands = true;
-    log(`🏆 ${winner.name} THẮNG POT ${fmtFull(totalWin)}!`, 'winner');
-    $('seat-' + winner.id).classList.add('winner');
-    showWinnerEffects(winner.id);
-    if(winner.isHuman){
-      showWinnerBanner(`🏆 BẠN THẮNG ${fmt(totalWin)}!`);
+
+    // Non-all-in active players
+    const activePlayers = players.filter(p => !p.folded && !p.allIn);
+
+    // FIX: if no one can act, run through remaining streets to showdown
+    if(activePlayers.length === 0){
+      if(gameStage === 'RIVER'){ await executeShowdown(); return; }
+      await advanceStage();
+      return;
+    }
+
+    // FIX: check if betting round is complete.
+    // "Matched" = every non-all-in player's currentBet === currentHighestBet.
+    // All-in players are considered "matched" (they can't act further).
+    const allMatched = activePlayers.every(p => p.currentBet === currentHighestBet);
+    const allActed = activePlayers.every(p => p.hasActed);
+    if(allMatched && allActed){ await advanceStage(); return; }
+
+    // Find next player to act
+    let attempts = 0;
+    while(attempts < 4){
+      const cp = players[activeTurnIdx];
+      // FIX: skip if folded, all-in, or already acted AND matched
+      if(cp.folded || cp.allIn || cp.chips === 0 ||
+         (cp.hasActed && cp.currentBet === currentHighestBet)){
+        activeTurnIdx = (activeTurnIdx + 1) % 4;
+        attempts++;
+        continue;
+      }
+      break;
+    }
+
+    if(attempts >= 4){
+      // No one to act — advance stage
+      if(gameStage === 'RIVER'){ await executeShowdown(); return; }
+      await advanceStage();
+      return;
+    }
+
+    const cp = players[activeTurnIdx];
+    if(cp.isHuman){
+      isHumanTurnWaiting = true;
+      updateUI();
+      startTurnTimer();
     } else {
-      showWinnerBanner(`🏆 ${winner.name} THẮNG!`);
+      isHumanTurnWaiting = false;
+      stopTurnTimer();
+      await simulateAITurn(cp);
     }
-    gameStage = 'END';
-    endHandStats(winner.id, totalWin);
-    updateUI();
-    saveGame();
-    return;
-  }
-
-  const activePlayers = players.filter(p => !p.folded && !p.allIn);
-  if(activePlayers.length === 0){
-    if(gameStage === 'RIVER'){ await executeShowdown(); return; }
-    else { await advanceStage(); return; }
-  }
-
-  const hasBetting = activePlayers.some(p => p.currentBet !== currentHighestBet);
-  const allActed = activePlayers.every(p => p.hasActed || p.chips === 0);
-  if(!hasBetting && allActed){ await advanceStage(); return; }
-
-  let cp = players[activeTurnIdx];
-  if(cp.folded || cp.allIn || (cp.hasActed && cp.currentBet === currentHighestBet) || cp.chips === 0){
-    activeTurnIdx = (activeTurnIdx + 1) % 4;
-    runTurnEngine();
-    return;
-  }
-
-  if(cp.isHuman){
-    isHumanTurnWaiting = true;
-    updateUI();
-    startTurnTimer();
-  } else {
-    isHumanTurnWaiting = false;
-    stopTurnTimer();
-    await simulateAITurn(cp);
+  } finally {
+    isProcessing = false;
   }
 }
+
 async function advanceStage(){
   players.forEach(p => { p.currentBet = 0; p.hasActed = false; });
   currentHighestBet = 0;
   minRaiseDelta = STRICT_MIN_RAISE;
   raiseInputUserChanged = false;
+
   if(gameStage === 'PREFLOP'){
     gameStage = 'FLOP';
     for(let i = 0; i < 3; i++){ communityCards.push(deck.pop()); await animateDealCard('community-cards'); }
@@ -1681,11 +1515,22 @@ async function advanceStage(){
     await executeShowdown();
     return;
   }
-  activeTurnIdx = (dealerIdx + 1) % 4;
+
+  // FIX: find first player after dealer who can act
+  let nextIdx = (dealerIdx + 1) % 4;
+  let tries = 0;
+  while(tries < 4){
+    const np = players[nextIdx];
+    if(!np.folded && !np.allIn && np.chips > 0) break;
+    nextIdx = (nextIdx + 1) % 4;
+    tries++;
+  }
+  activeTurnIdx = nextIdx;
   updateUI();
   saveGame();
   runTurnEngine();
 }
+
 async function executeShowdown(){
   revealAllHands = true;
   log(`--- 🎴 SHOWDOWN 🎴 ---`, 'gold');
@@ -1709,11 +1554,8 @@ async function executeShowdown(){
     showSpeech(w.player.id, "THẮNG! 🎉");
     $('seat-' + w.player.id).classList.add('winner');
     showWinnerEffects(w.player.id);
-    if(w.player.isHuman){
-      stats.royalFlushCount += (w.name === 'Royal Flush' ? 1 : 0);
-    } else {
-      botSay(w.player.id, 'win');
-    }
+    if(w.player.isHuman){ stats.royalFlushCount += (w.name === 'Royal Flush' ? 1 : 0); }
+    else { botSay(w.player.id, 'win'); }
     players.forEach(p => { if(!p.isHuman && p.id !== w.player.id) p.tilt = Math.min(100, p.tilt + 10); });
   });
 
@@ -1735,7 +1577,7 @@ async function executeShowdown(){
 }
 
 /* ================================================================
-   21. HAND STATS
+   22. HAND STATS
 ===============================================================*/
 function endHandStats(winnerId, potWon, isDraw){
   stats.gamesPlayed++;
@@ -1749,8 +1591,7 @@ function endHandStats(winnerId, potWon, isDraw){
     if(players.some(p => p.id !== 0 && p.allIn)) stats.allInWins++;
     addXP(20 + Math.floor(potWon / 100));
     showToast(`🎉 Thắng! +${20 + Math.floor(potWon/100)} XP`, 'win');
-    createConfetti(60);
-    vibrate([40, 60, 40]);
+    createConfetti(60); vibrate([40, 60, 40]);
     sessionStats.wins++;
     sessionStats.net += (potWon - players[0].bet);
   } else if(!isDraw){
@@ -1762,7 +1603,7 @@ function endHandStats(winnerId, potWon, isDraw){
     stats.streak = 0;
     addXP(8);
   }
-  // Track best hand
+  // Best hand tracking
   const human = players[0];
   if(human && human.hand.length){
     const all = [...human.hand, ...communityCards];
@@ -1776,9 +1617,7 @@ function endHandStats(winnerId, potWon, isDraw){
   }
   stats.history.unshift({
     result: humanWon ? 'win' : isDraw ? 'draw' : 'loss',
-    potWon,
-    chips: players[0].chips,
-    time: Date.now()
+    potWon, chips: players[0].chips, time: Date.now()
   });
   if(stats.history.length > 10) stats.history.length = 10;
   saveStats();
@@ -1787,7 +1626,7 @@ function endHandStats(winnerId, potWon, isDraw){
 }
 
 /* ================================================================
-   22. WINNER EFFECTS
+   23. WINNER EFFECTS
 ===============================================================*/
 function showWinnerEffects(seatId){
   createFireworks(seatId, 35);
@@ -1833,7 +1672,7 @@ function createFireworks(seatId, count = 18){
 }
 
 /* ================================================================
-   23. SAVE/LOAD
+   24. SAVE / LOAD
 ===============================================================*/
 function saveGame(){
   try{
@@ -1874,7 +1713,7 @@ function loadGame(){
 }
 
 /* ================================================================
-   24. HUMAN ACTION
+   25. HUMAN ACTION
 ===============================================================*/
 async function handleHumanChoice(action){
   if(!isHumanTurnWaiting) return;
@@ -1883,16 +1722,15 @@ async function handleHumanChoice(action){
 
   const p = players[0];
   const diff = currentHighestBet - p.currentBet;
-  const startChips = p.chips;
 
   if(action === 'fold'){
     p.folded = true;
     showSpeech(0, "Fold 🏳️");
     log(`Bạn Fold.`);
-    Sound.playFold();
-    vibrate(30);
+    Sound.playFold(); vibrate(30);
   } else if(action === 'check'){
     if(diff > 0){
+      // Can't check when there's a bet to call
       isHumanTurnWaiting = true;
       startTurnTimer();
       return;
@@ -1934,11 +1772,11 @@ async function handleHumanChoice(action){
 }
 
 /* ================================================================
-   25. NEW HAND
+   26. NEW HAND
 ===============================================================*/
 async function startNewHand(){
+  cleanupStaleFlyers();
   document.querySelectorAll('.seat').forEach(s => s.classList.remove('winner'));
-  document.querySelectorAll('.flash-overlay').forEach(el => el.remove());
   stopTurnTimer();
   checkBustOuts();
   createDeck();
@@ -1953,6 +1791,7 @@ async function startNewHand(){
   sidePots = [];
   preflopRaiser = -1;
   raiseInputUserChanged = false;
+  isProcessing = false;
 
   players.forEach(p => {
     p.hand = []; p.folded = false; p.currentBet = 0;
@@ -1976,19 +1815,27 @@ async function startNewHand(){
   postBet(bbIdx, BIG_BLIND);
   currentHighestBet = BIG_BLIND;
 
-  activeTurnIdx = (dealerIdx + 3) % 4;
+  // FIX: skip to first non-all-in player after BB
+  let nextIdx = (dealerIdx + 3) % 4;
+  let tries = 0;
+  while(tries < 4){
+    const np = players[nextIdx];
+    if(!np.folded && !np.allIn && np.chips > 0) break;
+    nextIdx = (nextIdx + 1) % 4;
+    tries++;
+  }
+  activeTurnIdx = nextIdx;
   updateUI();
   saveGame();
   runTurnEngine();
 }
 
 /* ================================================================
-   26. KEYBOARD SHORTCUTS
+   27. KEYBOARD
 ===============================================================*/
 document.addEventListener('keydown', e => {
   if(e.target.matches('input, textarea')) return;
   const key = e.key.toLowerCase();
-  // End state — space for next hand
   if((gameStage === 'END' || gameStage === 'SHOWDOWN') && (e.key === ' ' || key === 'enter')){
     e.preventDefault();
     if($('btn-next').style.display !== 'none') startNewHand();
@@ -1996,7 +1843,8 @@ document.addEventListener('keydown', e => {
   }
   if(!isHumanTurnWaiting) return;
   if(key === 'f'){ e.preventDefault(); handleHumanChoice('fold'); }
-  else if(key === 'c'){ e.preventDefault();
+  else if(key === 'c'){
+    e.preventDefault();
     const diff = currentHighestBet - players[0].currentBet;
     if(diff === 0) handleHumanChoice('check');
     else handleHumanChoice('call');
@@ -2009,7 +1857,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ================================================================
-   27. STATS MODAL
+   28. STATS / ACH / THEME / RESET
 ===============================================================*/
 function showStats(){
   const winRate = stats.gamesPlayed ? ((stats.wins / stats.gamesPlayed) * 100).toFixed(1) : '0.0';
@@ -2037,7 +1885,6 @@ function showStats(){
       <p style="font-size:.8rem;color:#cbd5e1">Bài mạnh nhất: <strong style="color:#4ade80">${stats.bestHandName || '—'}</strong></p>
       <p style="font-size:.8rem;color:#cbd5e1">Royal Flush: <strong style="color:#fbbf24">${stats.royalFlushCount} lần</strong></p>
       <p style="font-size:.8rem;color:#cbd5e1">All-in thắng: <strong style="color:#8b5cf6">${stats.allInWins} lần</strong></p>
-      <p style="font-size:.8rem;color:#cbd5e1">Chips cao nhất: <strong style="color:var(--gold)">${fmt(stats.peakChips)}</strong></p>
     </div>
     ${stats.history.length ? `
       <div class="modal-section">
@@ -2069,13 +1916,8 @@ function resetStats(){
   saveStats(); saveAch();
   showStats();
   showToast('Đã xóa thống kê', 'info');
-  updateAchBadge();
-  updateLevelBadge();
+  updateAchBadge(); updateLevelBadge();
 }
-
-/* ================================================================
-   28. ACHIEVEMENTS MODAL
-===============================================================*/
 function showAchievements(){
   const html = ACHIEVEMENTS.map(a => {
     const unlocked = !!achievements[a.id];
@@ -2087,29 +1929,18 @@ function showAchievements(){
   $('achievements-grid').innerHTML = html;
   openModal('modal-ach');
 }
-
-/* ================================================================
-   29. THEME / SOUND / RESET
-===============================================================*/
 function applyTheme(){
   document.body.classList.toggle('light', settings.theme === 'light');
   const btn = $('btn-theme');
   if(btn) btn.textContent = settings.theme === 'light' ? '☀️' : '🌙';
 }
-function toggleTheme(){
-  settings.theme = settings.theme === 'light' ? 'dark' : 'light';
-  saveSettings();
-  applyTheme();
-}
+function toggleTheme(){ settings.theme = settings.theme === 'light' ? 'dark' : 'light'; saveSettings(); applyTheme(); }
 function toggleSound(){
   settings.sound = !settings.sound;
   Sound.enabled = settings.sound;
   saveSettings();
   const btn = $('btn-sound');
-  if(btn){
-    btn.textContent = settings.sound ? '🔊' : '🔇';
-    btn.classList.toggle('muted', !settings.sound);
-  }
+  if(btn){ btn.textContent = settings.sound ? '🔊' : '🔇'; btn.classList.toggle('muted', !settings.sound); }
   showToast(settings.sound ? 'Bật âm thanh' : 'Tắt âm thanh', 'info');
 }
 function resetAll(){
@@ -2123,19 +1954,17 @@ function resetAll(){
 }
 
 /* ================================================================
-   30. INIT
+   29. INIT
 ===============================================================*/
 function init(isReset){
+  cleanupStaleFlyers();
   Sound.enabled = settings.sound;
   applyTheme();
   updateLevelBadge();
   updateAchBadge();
 
   const btn = $('btn-sound');
-  if(btn){
-    btn.textContent = Sound.enabled ? '🔊' : '🔇';
-    btn.classList.toggle('muted', !Sound.enabled);
-  }
+  if(btn){ btn.textContent = Sound.enabled ? '🔊' : '🔇'; btn.classList.toggle('muted', !Sound.enabled); }
 
   $('btn-sound').addEventListener('click', toggleSound);
   $('btn-stats').addEventListener('click', showStats);
@@ -2158,6 +1987,7 @@ function init(isReset){
         isHumanTurnWaiting = true;
         startTurnTimer();
       }
+      isProcessing = false;
       runTurnEngine();
     } else {
       $('btn-next').style.display = 'block';
@@ -2176,6 +2006,7 @@ function init(isReset){
     createDeck();
     log('♠️ Chào mừng đến với Rix Hold\'em Pro!', 'gold');
     log('💡 Xem hand strength dưới bàn. Phím: F/C/R.', 'special');
+    log('🎯 Timer 30s — hết giờ auto-fold.', 'special');
     startNewHand();
   }
   updateUI();
