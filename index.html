@@ -46,7 +46,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
   background:var(--table-felt);
   border:10px solid #2d120d;border-radius:180px;
   box-shadow:0 0 0 2px var(--gold),inset 0 0 80px rgba(0,0,0,.95),0 10px 25px rgba(0,0,0,.9);
-  overflow:hidden; /* KEY: clip to oval so nothing escapes */
+  overflow:hidden;
   animation:tableGlow 3s ease-in-out infinite alternate;
 }
 @keyframes tableGlow{0%{box-shadow:0 0 0 2px var(--gold),inset 0 0 80px rgba(0,0,0,.95),0 10px 25px rgba(0,0,0,.9)}100%{box-shadow:0 0 0 4px #fcd34d,inset 0 0 90px rgba(0,0,0,.95),0 10px 30px rgba(251,191,36,.2)}}
@@ -59,13 +59,15 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 @keyframes potBump{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .community-cards{display:flex;gap:3px;justify-content:center;align-items:center;min-height:var(--card-h)}
 
-/* SEAT - base styles */
+/* SEATS */
 .seat{position:absolute;display:flex;flex-direction:column;align-items:center;z-index:5;gap:4px}
 .seat-top{top:12px;left:50%;transform:translateX(-50%);width:110px}
 .seat-left{top:50%;left:14px;transform:translateY(-50%);width:100px}
 .seat-right{top:50%;right:14px;transform:translateY(-50%);width:100px}
-/* KEY FIX: user seat = column-reverse so cards go ABOVE, avatar BELOW */
-.seat-bottom{bottom:14px;left:50%;transform:translateX(-50%);width:130px;flex-direction:column-reverse;z-index:6}
+/* KEY FIX: user seat — cards go ABOVE avatar via order:-1 */
+.seat-bottom{bottom:14px;left:50%;transform:translateX(-50%);width:130px;z-index:6}
+.seat-bottom .cards-row{order:-1}
+.seat-bottom .avatar-box{order:1}
 
 .avatar-box{position:relative;background:rgba(15,23,42,.95);border:1.5px solid #475569;border-radius:8px;padding:4px 6px;text-align:center;width:100%;box-shadow:0 4px 10px rgba(0,0,0,.8);backdrop-filter:blur(4px);transition:all .25s ease;flex-shrink:0}
 .seat.active-turn .avatar-box{border-color:var(--gold);box-shadow:0 0 16px var(--gold);transform:scale(1.05);animation:pulse-avatar .8s ease-in-out infinite alternate}
@@ -87,15 +89,39 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .position-badge.pb-sb{background:#3b82f6;color:#fff}
 .position-badge.pb-bb{background:#f59e0b;color:#fff}
 
-.speech-bubble{position:absolute;top:-22px;background:var(--gold);color:#0f172a;font-weight:800;font-size:.62rem;padding:2px 8px;border-radius:8px;opacity:0;transition:opacity .2s,transform .2s;transform:translateY(4px);z-index:50;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.5);pointer-events:none}
+/* SPEECH BUBBLE — smaller, faster fade, semi-transparent */
+.speech-bubble{
+  position:absolute;
+  background:rgba(251,191,36,.92);
+  color:#0f172a;
+  font-weight:800;
+  font-size:.52rem;
+  padding:2px 6px;
+  border-radius:6px;
+  opacity:0;
+  transition:opacity .18s ease, transform .18s ease;
+  transform:translateY(3px);
+  z-index:60;
+  white-space:nowrap;
+  box-shadow:0 2px 5px rgba(0,0,0,.4);
+  pointer-events:none;
+  line-height:1.15;
+  letter-spacing:.01em;
+}
 .speech-bubble.show{opacity:1;transform:translateY(0)}
-.seat-top .speech-bubble{top:2px;left:102%}
-.seat-left .speech-bubble{top:-4px;left:100%}
-.seat-right .speech-bubble{top:-4px;right:100%}
-.seat-bottom .speech-bubble{top:auto;bottom:100%;left:50%;transform:translateX(-50%) translateY(-4px);margin-bottom:6px}
+
+/* Per-seat bubble positioning */
+.seat-top .speech-bubble{top:-20px;left:50%;transform:translateX(-50%) translateY(3px)}
+.seat-top .speech-bubble.show{transform:translateX(-50%) translateY(0)}
+.seat-left .speech-bubble{top:-20px;left:50%;transform:translateX(-50%) translateY(3px)}
+.seat-left .speech-bubble.show{transform:translateX(-50%) translateY(0)}
+.seat-right .speech-bubble{top:-20px;left:50%;transform:translateX(-50%) translateY(3px)}
+.seat-right .speech-bubble.show{transform:translateX(-50%) translateY(0)}
+/* Seat-bottom: bubble above cards (since cards order -1) */
+.seat-bottom .speech-bubble{top:-20px;left:50%;transform:translateX(-50%) translateY(3px)}
 .seat-bottom .speech-bubble.show{transform:translateX(-50%) translateY(0)}
 
-/* CARDS ROW - KEY FIX: no width:100%, shrink-wrap */
+/* CARDS ROW */
 .cards-row{display:none;gap:3px;justify-content:center;align-items:center;height:var(--card-h);flex-shrink:0}
 .cards-row.has-cards{display:flex}
 
@@ -230,7 +256,6 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 .flash-overlay{position:fixed;inset:0;background:radial-gradient(circle,rgba(251,191,36,.25) 0%,rgba(251,191,36,0) 70%);pointer-events:none;z-index:999;opacity:0;animation:flashPulse .6s ease-out forwards}
 @keyframes flashPulse{0%{opacity:1}100%{opacity:0}}
 
-/* WINNER BANNER - top so it doesn't cover table */
 .winner-banner{position:fixed;top:10%;left:50%;transform:translate(-50%,-50%) scale(.5);z-index:2500;pointer-events:none;padding:12px 24px;border-radius:18px;background:linear-gradient(135deg,#fbbf24,#f59e0b,#ef4444);color:#fff;font-weight:900;font-size:1.1rem;text-shadow:0 2px 4px rgba(0,0,0,.3);box-shadow:0 20px 60px rgba(251,191,36,.6);border:3px solid #fff;letter-spacing:1px;animation:winnerPop 1.4s cubic-bezier(.34,1.56,.64,1) forwards;white-space:nowrap}
 @keyframes winnerPop{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}20%{transform:translate(-50%,-50%) scale(1.15);opacity:1}75%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
 
@@ -369,11 +394,12 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 <div class="log-box" id="log-box"></div>
 
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.12</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.13</span> from bao with love ♡</span>
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
 
+<!-- HELP -->
 <div class="modal-backdrop" id="modal-help">
   <div class="modal-content">
     <div class="modal-head">
@@ -432,7 +458,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 /* ============================================================
    VERSION
 ============================================================ */
-const APP_VERSION = '150926.12';
+const APP_VERSION = '150926.13';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -577,10 +603,10 @@ function botSay(pIdx, type){
 /* ============================================================
    PERSISTENT STATE
 ============================================================ */
-const LS_STATS = 'rix_poker_stats_v8';
-const LS_ACH = 'rix_poker_ach_v8';
-const LS_SETTINGS = 'rix_poker_settings_v8';
-const SAVE_KEY = 'rix_poker_save_v8';
+const LS_STATS = 'rix_poker_stats_v9';
+const LS_ACH = 'rix_poker_ach_v9';
+const LS_SETTINGS = 'rix_poker_settings_v9';
+const SAVE_KEY = 'rix_poker_save_v9';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
@@ -726,7 +752,7 @@ function showSpeech(pIdx, text){
   b.innerText = text;
   b.classList.add('show');
   clearTimeout(b._timer);
-  b._timer = setTimeout(() => b.classList.remove('show'), 1800);
+  b._timer = setTimeout(() => b.classList.remove('show'), 1200);
 }
 
 /* ============================================================
@@ -1144,7 +1170,7 @@ function impliedOddsFactor(p){
 
 async function simulateAITurn(p){
   const emotions = ["🧐","🤔","😏","🤫","😤","🥶","🔥"];
-  showSpeech(p.id, emotions[Math.floor(Math.random()*emotions.length)] + ' Đang tính...');
+  showSpeech(p.id, emotions[Math.floor(Math.random()*emotions.length)]);
   let thinkTime = 700 + Math.random()*900;
   if(currentHighestBet > p.currentBet * 2) thinkTime += 500;
   await sleep(thinkTime);
@@ -1227,7 +1253,7 @@ async function simulateAITurn(p){
     Sound.playFold(); botSay(p.id, 'fold');
     log(`${p.name} Fold.`);
   } else if(choice === 'check'){
-    showSpeech(p.id, "Check ✊");
+    showSpeech(p.id, "Check");
     Sound.playKnock(); botSay(p.id, 'check');
     log(`${p.name} Check.`);
   } else if(choice === 'call'){
@@ -1250,7 +1276,7 @@ function applyAction(p, type, amount, label){
     players.forEach(pl => {
       if(pl.id !== p.id && !pl.folded && !pl.allIn && pl.chips > 0) pl.hasActed = false;
     });
-    showSpeech(p.id, `${label} ${fmt(currentHighestBet)} 🚀`);
+    showSpeech(p.id, `${label} ${fmt(currentHighestBet)}`);
     log(`${p.name} ${label} lên ${fmtFull(currentHighestBet)}!`, 'gold');
   } else if(type === 'call'){
     postBet(p.id, amount);
@@ -1658,7 +1684,7 @@ function handleHumanChoice(action){
       startTurnTimer();
       return;
     }
-    showSpeech(0, "Check ✊");
+    showSpeech(0, "Check");
     Sound.playKnock();
     log(`Bạn Check.`);
     p.hasActed = true;
