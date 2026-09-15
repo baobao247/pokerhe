@@ -60,88 +60,138 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .community-cards{display:flex;gap:3px;justify-content:center;align-items:center;min-height:var(--card-h)}
 
 /* ============================================================
-   SEATS — using CSS GRID with explicit grid-template-areas
+   SEATS — HOÀN TOÀN MỚI
+   - .seat: container flex đơn giản, chỉ chứa avatar-box
+   - .cards-row: absolute, đặt riêng từng seat
+   - .speech-bubble: absolute, đặt riêng từng seat
    ============================================================ */
 .seat{
   position:absolute;
-  display:grid;
-  justify-items:center;
+  display:flex;
+  flex-direction:column;
   align-items:center;
-  gap:4px;
   z-index:5;
 }
 
-/* Avatar box is always a single unit */
-.avatar-box{
+/* Avatar-box — nằm trong flow, quyết định chiều cao seat */
+.seat .avatar-box{
   position:relative;
+  width:100%;
   background:rgba(15,23,42,.95);
   border:1.5px solid #475569;
   border-radius:8px;
   padding:4px 6px;
   text-align:center;
-  width:100%;
   box-shadow:0 4px 10px rgba(0,0,0,.8);
   backdrop-filter:blur(4px);
   transition:all .25s ease;
+  z-index:2;
 }
 
-/* CARDS ROW */
-.cards-row{
+/* Cards-row — absolute, không ảnh hưởng layout */
+.seat .cards-row{
   display:none;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
   gap:3px;
   justify-content:center;
   align-items:center;
   height:var(--card-h);
+  z-index:1;
 }
-.cards-row.has-cards{display:flex}
+.seat .cards-row.has-cards{display:flex}
 
-/* ========== SEAT TOP: avatar on top, cards below ========== */
+/* Speech bubble — absolute, đặt riêng từng seat */
+.seat .speech-bubble{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%) translateY(4px);
+  background:rgba(251,191,36,.95);
+  color:#0f172a;
+  font-weight:800;
+  font-size:.52rem;
+  padding:2px 7px;
+  border-radius:7px;
+  opacity:0;
+  transition:opacity .18s ease, transform .18s ease;
+  z-index:100;
+  white-space:nowrap;
+  box-shadow:0 3px 6px rgba(0,0,0,.5);
+  pointer-events:none;
+  line-height:1.15;
+  max-width:130px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.seat .speech-bubble.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* ============ SEAT-TOP ============ */
+/* Avatar ở trên, cards ở dưới (absolute) */
 .seat-top{
-  top:48px;left:50%;transform:translateX(-50%);
+  top:48px;
+  left:50%;
+  transform:translateX(-50%);
   width:110px;
-  grid-template-areas:
-    "avatar"
-    "cards";
-  grid-template-rows:auto auto;
 }
-.seat-top .avatar-box{grid-area:avatar}
-.seat-top .cards-row{grid-area:cards}
+.seat-top .cards-row{
+  top:calc(100% + 4px);
+}
+.seat-top .speech-bubble{
+  top:-20px;
+  bottom:auto;
+}
 
-/* ========== SEAT LEFT: avatar on top, cards below ========== */
+/* ============ SEAT-LEFT ============ */
 .seat-left{
-  top:50%;left:14px;transform:translateY(-50%);
+  top:50%;
+  left:14px;
+  transform:translateY(-50%);
   width:100px;
-  grid-template-areas:
-    "avatar"
-    "cards";
-  grid-template-rows:auto auto;
 }
-.seat-left .avatar-box{grid-area:avatar}
-.seat-left .cards-row{grid-area:cards}
+.seat-left .cards-row{
+  top:calc(100% + 4px);
+}
+.seat-left .speech-bubble{
+  top:-20px;
+  bottom:auto;
+}
 
-/* ========== SEAT RIGHT: avatar on top, cards below ========== */
+/* ============ SEAT-RIGHT ============ */
 .seat-right{
-  top:50%;right:14px;transform:translateY(-50%);
+  top:50%;
+  right:14px;
+  transform:translateY(-50%);
   width:100px;
-  grid-template-areas:
-    "avatar"
-    "cards";
-  grid-template-rows:auto auto;
 }
-.seat-right .avatar-box{grid-area:avatar}
-.seat-right .cards-row{grid-area:cards}
+.seat-right .cards-row{
+  top:calc(100% + 4px);
+}
+.seat-right .speech-bubble{
+  top:-20px;
+  bottom:auto;
+}
 
-/* ========== SEAT BOTTOM: CARDS on top, avatar BELOW ========== */
+/* ============ SEAT-BOTTOM (USER) ============ */
+/* Avatar ở dưới, cards ở TRÊN (absolute) */
 .seat-bottom{
-  bottom:14px;left:50%;transform:translateX(-50%);
-  width:130px;z-index:6;
-  grid-template-areas:
-    "cards"
-    "avatar";
-  grid-template-rows:auto auto;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:130px;
+  z-index:6;
 }
-.seat-bottom .avatar-box{grid-area:avatar}
-.seat-bottom .cards-row{grid-area:cards}
+.seat-bottom .cards-row{
+  bottom:calc(100% + 4px);
+  top:auto;
+}
+.seat-bottom .speech-bubble{
+  bottom:calc(100% + 4px + var(--card-h) + 6px);
+  top:auto;
+}
 
 /* AVATAR STATES */
 .seat.active-turn .avatar-box{border-color:var(--gold);box-shadow:0 0 16px var(--gold);transform:scale(1.05);animation:pulse-avatar .8s ease-in-out infinite alternate}
@@ -163,35 +213,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .position-badge.pb-sb{background:#3b82f6;color:#fff}
 .position-badge.pb-bb{background:#f59e0b;color:#fff}
 
-/* SPEECH BUBBLE — positioned ABOVE the seat, inside table bounds */
-.speech-bubble{
-  position:absolute;
-  top:-16px;
-  left:50%;
-  transform:translateX(-50%) translateY(4px);
-  background:rgba(251,191,36,.95);
-  color:#0f172a;
-  font-weight:800;
-  font-size:.52rem;
-  padding:2px 7px;
-  border-radius:7px;
-  opacity:0;
-  transition:opacity .18s ease, transform .18s ease;
-  z-index:70;
-  white-space:nowrap;
-  box-shadow:0 3px 6px rgba(0,0,0,.5);
-  pointer-events:none;
-  line-height:1.15;
-  max-width:130px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.speech-bubble.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-/* ========== CARD STYLES ========== */
+/* ========== CARDS ========== */
 .card-container{perspective:1000px;width:var(--card-w);height:var(--card-h);flex-shrink:0}
 .card-inner{position:relative;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
 .card-container.flipped .card-inner{transform:rotateY(180deg)}
@@ -384,7 +406,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="community-cards" id="community-cards"></div>
     </div>
 
-    <!-- SEAT TOP: avatar on top, cards below -->
+    <!-- SEAT TOP: avatar top, cards below -->
     <div class="seat seat-top" id="seat-2">
       <div class="speech-bubble" id="bubble-2">Check</div>
       <div class="avatar-box">
@@ -397,7 +419,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-2"></div>
     </div>
 
-    <!-- SEAT LEFT: avatar on top, cards below -->
+    <!-- SEAT LEFT: avatar top, cards below -->
     <div class="seat seat-left" id="seat-1">
       <div class="speech-bubble" id="bubble-1">Check</div>
       <div class="avatar-box">
@@ -410,7 +432,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-1"></div>
     </div>
 
-    <!-- SEAT RIGHT: avatar on top, cards below -->
+    <!-- SEAT RIGHT: avatar top, cards below -->
     <div class="seat seat-right" id="seat-3">
       <div class="speech-bubble" id="bubble-3">Check</div>
       <div class="avatar-box">
@@ -423,7 +445,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-3"></div>
     </div>
 
-    <!-- SEAT BOTTOM (user): avatar in DOM first, but grid places it BELOW cards via grid-template-areas -->
+    <!-- SEAT BOTTOM (user): avatar bottom, cards ABOVE -->
     <div class="seat seat-bottom" id="seat-0">
       <div class="speech-bubble" id="bubble-0">Check</div>
       <div class="avatar-box">
@@ -472,7 +494,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 <div class="log-box" id="log-box"></div>
 
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.16</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.17</span> from bao with love ♡</span>
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
@@ -536,7 +558,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 /* ============================================================
    VERSION
 ============================================================ */
-const APP_VERSION = '150926.16';
+const APP_VERSION = '150926.17';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -681,10 +703,10 @@ function botSay(pIdx, type){
 /* ============================================================
    PERSISTENT STATE
 ============================================================ */
-const LS_STATS = 'rix_poker_stats_v12';
-const LS_ACH = 'rix_poker_ach_v12';
-const LS_SETTINGS = 'rix_poker_settings_v12';
-const SAVE_KEY = 'rix_poker_save_v12';
+const LS_STATS = 'rix_poker_stats_v13';
+const LS_ACH = 'rix_poker_ach_v13';
+const LS_SETTINGS = 'rix_poker_settings_v13';
+const SAVE_KEY = 'rix_poker_save_v13';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
