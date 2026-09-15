@@ -39,9 +39,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .session-badge .plus{color:#4ade80}
 .session-badge .minus{color:#f87171}
 
-/* ============================================================
-   TABLE CONTAINER — 2 khu vực riêng biệt
-   ============================================================ */
+/* TABLE CONTAINER */
 .table-container{
   position:relative;
   width:100%;
@@ -73,9 +71,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 @keyframes potBump{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .community-cards{display:flex;gap:3px;justify-content:center;align-items:center;min-height:var(--card-h)}
 
-/* ============================================================
-   SEATS — Cố định vị trí, không trôi xuống
-   ============================================================ */
+/* SEATS */
 .seat{
   position:absolute;
   display:flex;
@@ -85,11 +81,11 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
   z-index:5;
 }
 .seat-top{top:22px;left:50%;transform:translateX(-50%);width:110px}
-/* Dùng bottom thay vì top:50% để cụm không trôi xuống dưới */
-.seat-left{bottom:140px;left:14px;width:100px}
-.seat-right{bottom:140px;right:14px;width:100px}
+/* Bot left/right — căn giữa dọc bàn, đối xứng với top/bottom */
+.seat-left{top:42%;left:14px;transform:translateY(-50%);width:100px}
+.seat-right{top:42%;right:14px;transform:translateY(-50%);width:100px}
 /* User: chỉ có cards, căn giữa đáy bàn — nâng cao để nằm trong felt */
-.seat-bottom{bottom:70px;left:50%;transform:translateX(-50%);z-index:5}
+.seat-bottom{bottom:90px;left:50%;transform:translateX(-50%);z-index:5}
 
 .avatar-box{
   position:relative;
@@ -115,7 +111,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 }
 .cards-row.has-cards{display:flex}
 
-/* USER PANEL — Avatar-box của user, NGOÀI bàn */
+/* USER PANEL */
 .user-panel{
   width:130px;
   z-index:10;
@@ -183,6 +179,8 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .card-container{perspective:1000px;width:var(--card-w);height:var(--card-h);flex-shrink:0}
 .card-inner{position:relative;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
 .card-container.flipped .card-inner{transform:rotateY(180deg)}
+/* Tắt animation khi reveal bài / showdown → cards cố định không bị "tụt" */
+.card-container.no-flip-anim .card-inner{transition:none!important}
 .card-front,.card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:space-between;padding:2px 3px;font-weight:900;font-size:.72rem}
 .card-front{background:#fff;border:1px solid #cbd5e1;transform:rotateY(180deg)}
 .card-front.red{color:#dc2626}
@@ -333,13 +331,13 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
   .card-container{width:32px;height:45px}
   .speech-bubble{font-size:.48rem;padding:1px 5px;max-width:110px}
   .seat-top{top:20px}
-  .seat-left,.seat-right{bottom:120px}
-  .seat-bottom{bottom:60px}
+  .seat-left,.seat-right{top:40%}
+  .seat-bottom{bottom:76px}
 }
 @media (max-height:700px){
   .poker-table{height:390px}
-  .seat-left,.seat-right{bottom:110px}
-  .seat-bottom{bottom:56px}
+  .seat-left,.seat-right{top:40%}
+  .seat-bottom{bottom:76px}
 }
 </style>
 </head>
@@ -468,7 +466,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 <div class="log-box" id="log-box"></div>
 
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.21</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.22</span> from bao with love ♡</span>
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
@@ -532,7 +530,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 /* ============================================================
    VERSION
 ============================================================ */
-const APP_VERSION = '150926.21';
+const APP_VERSION = '150926.22';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -691,10 +689,10 @@ function botSay(pIdx, type){
 /* ============================================================
    PERSISTENT STATE
 ============================================================ */
-const LS_STATS = 'rix_poker_stats_v17';
-const LS_ACH = 'rix_poker_ach_v17';
-const LS_SETTINGS = 'rix_poker_settings_v17';
-const SAVE_KEY = 'rix_poker_save_v17';
+const LS_STATS = 'rix_poker_stats_v18';
+const LS_ACH = 'rix_poker_ach_v18';
+const LS_SETTINGS = 'rix_poker_settings_v18';
+const SAVE_KEY = 'rix_poker_save_v18';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
@@ -920,9 +918,10 @@ function createDeck(){
   for(const s of SUITS) for(const r of RANKS) deck.push({suit:s, rank:r, name:NAMES[r]});
   deck = shuffleArray(deck);
 }
-function create3DCardElement(card, isFaceUp = false, glow = ''){
+/* create3DCardElement với param noAnim — khi reveal thì tắt transition để cards không "tụt" */
+function create3DCardElement(card, isFaceUp = false, glow = '', noAnim = false){
   const c = document.createElement('div');
-  c.className = `card-container ${isFaceUp ? 'flipped' : ''}`;
+  c.className = `card-container ${isFaceUp ? 'flipped' : ''}${noAnim ? ' no-flip-anim' : ''}`;
   if(glow) c.classList.add(glow);
   const isRed = card.suit === '♥' || card.suit === '♦';
   c.innerHTML = `
@@ -1084,16 +1083,18 @@ function updateUI(){
       else betEl.classList.remove('show');
     }
 
-    // Cards — safety slice(0, 2) chống bug hand cộng dồn
+    // Cards — safety slice(0, 2) + noAnim khi reveal/showdown/end
     const cc = $(`cards-${i}`);
     if(cc){
       cc.innerHTML = '';
       const handToShow = (p.hand || []).slice(0, 2);
+      // Nếu đang ở chế độ reveal → tắt animation để cards cố định, không bị "tụt"
+      const skipAnim = revealAllHands || gameStage === 'SHOWDOWN' || gameStage === 'END';
       if(handToShow.length > 0){
         cc.classList.add('has-cards');
         handToShow.forEach(c => {
           const show = p.isHuman || revealAllHands || gameStage === 'SHOWDOWN' || gameStage === 'END';
-          cc.appendChild(create3DCardElement(c, show));
+          cc.appendChild(create3DCardElement(c, show, '', skipAnim));
         });
       } else cc.classList.remove('has-cards');
     }
@@ -1126,7 +1127,7 @@ function updateUI(){
   const comm = $('community-cards');
   if(comm){
     comm.innerHTML = '';
-    communityCards.forEach(c => comm.appendChild(create3DCardElement(c, true)));
+    communityCards.forEach(c => comm.appendChild(create3DCardElement(c, true, '', true)));
   }
 
   const isHumanTurn = (activeTurnIdx === 0 && isHumanTurnWaiting && gameStage !== 'SHOWDOWN' && gameStage !== 'END');
@@ -1772,9 +1773,7 @@ function loadGame(){
    HUMAN ACTION
 ============================================================ */
 function handleHumanChoice(action){
-  // Guard 1: không phải turn human
   if(!isHumanTurnWaiting) return;
-  // Guard 2: đang xử lý action khác (chống double-click, click + timer cùng lúc)
   if(humanActionLock) return;
   humanActionLock = true;
 
@@ -1793,7 +1792,6 @@ function handleHumanChoice(action){
       p.hasActed = true;
     } else if(action === 'check'){
       if(diff > 0){
-        // Không thể check khi có bet — reset trạng thái để user thử lại
         isHumanTurnWaiting = true;
         humanActionLock = false;
         startTurnTimer();
@@ -1830,10 +1828,9 @@ function handleHumanChoice(action){
 }
 
 /* ============================================================
-   NEW HAND — Có guard chống concurrent
+   NEW HAND
 ============================================================ */
 async function startNewHand(){
-  // Guard: chống concurrent calls (double-click "Ván Tiếp", spam Space)
   if(startingHand) return;
   startingHand = true;
 
@@ -1857,7 +1854,6 @@ async function startNewHand(){
     handRunning = false;
     humanActionLock = false;
 
-    // Force clear hand cũ (dùng .length = 0 để clear array in place)
     players.forEach(p => {
       p.hand.length = 0;
       p.folded = false;
