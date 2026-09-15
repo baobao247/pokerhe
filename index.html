@@ -55,10 +55,9 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 }
 
 .poker-table{
-  position:relative;width:100%;height:clamp(380px,54vh,480px);
-  padding-bottom:16px;
+  position:relative;width:100%;height:clamp(400px,56vh,500px);
   background:var(--table-felt);
-  border:10px solid #2d120d;border-radius:180px;
+  border:10px solid #2d120d;border-radius:190px;
   box-shadow:0 0 0 2px var(--gold),inset 0 0 80px rgba(0,0,0,.95),0 10px 25px rgba(0,0,0,.9);
   overflow:hidden;
   animation:tableGlow 3s ease-in-out infinite alternate;
@@ -74,7 +73,9 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 @keyframes potBump{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .community-cards{display:flex;gap:3px;justify-content:center;align-items:center;min-height:var(--card-h)}
 
-/* SEATS */
+/* ============================================================
+   SEATS — Cố định vị trí, không trôi xuống
+   ============================================================ */
 .seat{
   position:absolute;
   display:flex;
@@ -84,10 +85,11 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
   z-index:5;
 }
 .seat-top{top:22px;left:50%;transform:translateX(-50%);width:110px}
-.seat-left{top:50%;left:14px;transform:translateY(-50%);width:100px}
-.seat-right{top:50%;right:14px;transform:translateY(-50%);width:100px}
-/* User: chỉ có cards, căn giữa đáy bàn — đẩy lên để không chạm viền cong */
-.seat-bottom{bottom:32px;left:50%;transform:translateX(-50%);z-index:5}
+/* Dùng bottom thay vì top:50% để cụm không trôi xuống dưới */
+.seat-left{bottom:140px;left:14px;width:100px}
+.seat-right{bottom:140px;right:14px;width:100px}
+/* User: chỉ có cards, căn giữa đáy bàn — nâng cao để nằm trong felt */
+.seat-bottom{bottom:70px;left:50%;transform:translateX(-50%);z-index:5}
 
 .avatar-box{
   position:relative;
@@ -327,15 +329,17 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
   .stat-card .v{font-size:1.15rem}
   .session-badge{display:none}
   .raise-control-group{grid-template-columns:38px 1fr 38px 1.2fr}
-  .poker-table{height:clamp(360px,52vh,440px)}
+  .poker-table{height:clamp(380px,54vh,460px);border-radius:160px}
   .card-container{width:32px;height:45px}
   .speech-bubble{font-size:.48rem;padding:1px 5px;max-width:110px}
-  .seat-top{top:18px}
-  .seat-bottom{bottom:28px}
+  .seat-top{top:20px}
+  .seat-left,.seat-right{bottom:120px}
+  .seat-bottom{bottom:60px}
 }
 @media (max-height:700px){
-  .poker-table{height:360px}
-  .seat-bottom{bottom:26px}
+  .poker-table{height:390px}
+  .seat-left,.seat-right{bottom:110px}
+  .seat-bottom{bottom:56px}
 }
 </style>
 </head>
@@ -464,7 +468,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 <div class="log-box" id="log-box"></div>
 
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.20</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.21</span> from bao with love ♡</span>
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
@@ -528,7 +532,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 /* ============================================================
    VERSION
 ============================================================ */
-const APP_VERSION = '150926.20';
+const APP_VERSION = '150926.21';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -687,10 +691,10 @@ function botSay(pIdx, type){
 /* ============================================================
    PERSISTENT STATE
 ============================================================ */
-const LS_STATS = 'rix_poker_stats_v16';
-const LS_ACH = 'rix_poker_ach_v16';
-const LS_SETTINGS = 'rix_poker_settings_v16';
-const SAVE_KEY = 'rix_poker_save_v16';
+const LS_STATS = 'rix_poker_stats_v17';
+const LS_ACH = 'rix_poker_ach_v17';
+const LS_SETTINGS = 'rix_poker_settings_v17';
+const SAVE_KEY = 'rix_poker_save_v17';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
