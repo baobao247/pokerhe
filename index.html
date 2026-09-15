@@ -51,10 +51,18 @@ body{
 }
 .level-badge{
   display:inline-flex;align-items:center;gap:4px;
-  padding:2px 10px;border-radius:999px;margin-top:2px;
+  padding:3px 12px;border-radius:999px;margin-top:2px;
   background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;
   font-size:.68rem;font-weight:800;
 }
+.session-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px;border-radius:999px;margin-left:6px;
+  background:rgba(0,0,0,.3);color:#94a3b8;
+  font-size:.65rem;font-weight:700;
+}
+.session-badge .plus{color:#4ade80}
+.session-badge .minus{color:#f87171}
 /* ===== TABLE ===== */
 .table-container{position:relative;width:100%;max-width:480px;margin:8px 0 4px 0}
 .poker-table{
@@ -88,7 +96,7 @@ body{
 .seat-top{top:12px;left:50%;transform:translateX(-50%);width:105px}
 .seat-left{top:50%;left:4px;transform:translateY(-50%);width:82px}
 .seat-right{top:50%;right:4px;transform:translateY(-50%);width:82px}
-.seat-bottom{bottom:10px;left:50%;transform:translateX(-50%);width:115px}
+.seat-bottom{bottom:10px;left:50%;transform:translateX(-50%);width:120px}
 .avatar-box{
   position:relative;background:rgba(15,23,42,.92);border:1.5px solid #475569;
   border-radius:8px;padding:3px 4px;text-align:center;width:100%;
@@ -114,21 +122,35 @@ body{
 .seat.folded{opacity:.4;filter:grayscale(.7)}
 .player-name{font-weight:800;font-size:clamp(.58rem,2vw,.73rem);color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-chips{color:var(--rix);font-weight:800;font-size:clamp(.56rem,1.9vw,.7rem);font-variant-numeric:tabular-nums}
+.player-bet{
+  position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.85);color:var(--gold);
+  padding:1px 8px;border-radius:8px;
+  font-size:.6rem;font-weight:900;
+  border:1px solid rgba(251,191,36,.5);
+  white-space:nowrap;display:none;
+  z-index:6;
+}
+.player-bet.show{display:block;animation:betPop .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes betPop{0%{transform:translateX(-50%) scale(.5);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
 .dealer-marker{
   position:absolute;top:-6px;right:-6px;background:#ef4444;color:white;
   font-weight:900;font-size:.55rem;width:17px;height:17px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   border:1.5px solid white;box-shadow:0 2px 5px rgba(0,0,0,.6);
 }
+/* ===== POSITION BADGES — FIXED! (không dùng class .btn nữa) ===== */
 .position-badge{
-  position:absolute;top:-6px;left:-6px;
-  padding:1px 6px;border-radius:8px;
-  font-size:.5rem;font-weight:900;
+  position:absolute;top:-8px;left:-8px;
+  padding:2px 7px;border-radius:8px;
+  font-size:.55rem;font-weight:900;line-height:1;
   border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6);
+  white-space:nowrap;z-index:10;
+  letter-spacing:.04em;
 }
-.position-badge.btn{background:#8b5cf6;color:#fff}
-.position-badge.sb{background:#3b82f6;color:#fff}
-.position-badge.bb{background:#f59e0b;color:#fff}
+.position-badge.pb-btn{background:#8b5cf6;color:#fff}
+.position-badge.pb-sb{background:#3b82f6;color:#fff}
+.position-badge.pb-bb{background:#f59e0b;color:#fff}
 .speech-bubble{
   position:absolute;top:-24px;background:var(--gold);color:#0f172a;
   font-weight:800;font-size:.62rem;padding:2px 7px;border-radius:8px;
@@ -153,7 +175,17 @@ body{
 .card-front.red{color:#dc2626}
 .card-front.black{color:#0f172a}
 .card-front .suit{align-self:flex-end;font-size:.78rem;line-height:1}
-.card-back{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);border:1px solid var(--gold);transform:rotateY(0deg)}
+.card-back{
+  background:
+    repeating-linear-gradient(45deg,rgba(59,130,246,.15) 0 4px,transparent 4px 8px),
+    repeating-linear-gradient(-45deg,rgba(59,130,246,.15) 0 4px,transparent 4px 8px),
+    linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);
+  border:1px solid var(--gold);transform:rotateY(0deg);
+  position:relative;
+}
+.card-back::after{
+  content:'';position:absolute;inset:4px;border:1px solid rgba(251,191,36,.35);border-radius:2px;
+}
 .card-container.glow-gold .card-front{box-shadow:0 0 20px var(--gold),0 0 40px rgba(251,191,36,.4);border-color:var(--gold)}
 .card-container.glow-rainbow .card-front{
   box-shadow:0 0 30px #fbbf24,0 0 60px #f59e0b,0 0 90px #ef4444;border-color:#fbbf24;
@@ -181,15 +213,16 @@ body{
 }
 /* ===== INFO BAR ===== */
 .info-bar{
-  width:100%;max-width:480px;padding:6px 10px;margin-top:4px;
+  width:100%;max-width:480px;padding:6px 12px;margin-top:4px;
   background:var(--surface);border:1.5px solid var(--border);border-radius:12px;
   display:flex;align-items:center;gap:10px;justify-content:space-between;
-  min-height:40px;
+  min-height:42px;
 }
 .hand-strength{
-  display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:800;color:var(--gold);
+  display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:800;color:var(--gold);
   flex:1;min-width:0;
 }
+.hand-strength .strength-icon{font-size:1.1rem;flex-shrink:0}
 .hand-strength .strength-name{
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
@@ -222,13 +255,16 @@ body{
 .btn-check{background:#3b82f6}
 .btn-call{background:#10b981}
 .btn-raise{background:#f59e0b;flex:1;padding:11px 0}
-.btn-next{background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);grid-column:span 3;padding:11px 0;font-size:.95rem}
+.btn-next{background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);grid-column:span 3;padding:12px 0;font-size:1rem;letter-spacing:.5px}
 .raise-control-group{display:flex;gap:5px;width:100%;align-items:center}
-.btn-step{background:var(--surface-2);color:var(--gold);border:1px solid rgba(255,255,255,.15);width:38px;height:40px;font-size:.8rem;font-weight:800;border-radius:8px;cursor:pointer;color:#fff}
-input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid var(--gold);font-weight:bold;text-align:center;background:var(--surface);color:var(--gold);font-size:.85rem}
+.btn-step{background:var(--surface-2);color:#fff;border:1px solid rgba(255,255,255,.15);width:38px;height:40px;font-size:.9rem;font-weight:800;border-radius:8px;cursor:pointer;transition:all .15s}
+.btn-step:hover{background:var(--border);color:var(--gold)}
+input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid var(--gold);font-weight:bold;text-align:center;background:var(--surface);color:var(--gold);font-size:.85rem;-moz-appearance:textfield}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .raise-presets{display:flex;gap:4px;width:100%;justify-content:center;flex-wrap:wrap}
 .preset-btn{
-  padding:5px 10px;border-radius:8px;border:1.5px solid #334155;
+  padding:5px 11px;border-radius:8px;border:1.5px solid #334155;
   background:var(--surface);color:var(--text-muted);
   font-weight:700;font-size:.68rem;cursor:pointer;transition:all .15s;
 }
@@ -277,6 +313,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 .modal-section ul{padding-left:20px}
 .modal-section li{margin-bottom:4px}
 .modal-section code{background:#1e293b;padding:1px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:.75rem;color:var(--gold)}
+.kbd{display:inline-block;padding:2px 8px;border-radius:5px;background:#1e293b;border:1px solid #475569;font-family:'Courier New',monospace;font-size:.72rem;font-weight:700;color:var(--gold);box-shadow:0 2px 0 #334155}
 /* ===== STATS ===== */
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
 .stat-card{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:12px;padding:12px;text-align:center}
@@ -320,13 +357,32 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 .toast.info{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border-color:#60a5fa;box-shadow:0 10px 30px rgba(59,130,246,.4)}
 .toast.win{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-color:#34d399;box-shadow:0 10px 30px rgba(16,185,129,.4)}
 @keyframes toastIn{from{opacity:0;transform:translateY(-20px) scale(.9)}to{opacity:1;transform:none}}
-/* ===== CONFETTI ===== */
+/* ===== CONFETTI & FIREWORKS ===== */
 .confetti{position:fixed;width:10px;height:14px;z-index:9999;pointer-events:none;top:-20px;animation:confettiFall linear forwards}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0) scale(1);opacity:1}100%{transform:translateY(110vh) rotate(720deg) scale(.6);opacity:0}}
 .firework{position:fixed;pointer-events:none;width:8px;height:8px;border-radius:50%;animation:firework-burst .8s ease-out forwards;z-index:1000}
 @keyframes firework-burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 .flash-overlay{position:fixed;inset:0;background:radial-gradient(circle,rgba(251,191,36,.25) 0%,rgba(251,191,36,0) 70%);pointer-events:none;z-index:999;opacity:0;animation:flashPulse .6s ease-out forwards}
 @keyframes flashPulse{0%{opacity:1}100%{opacity:0}}
+/* ===== WINNER BANNER ===== */
+.winner-banner{
+  position:fixed;top:35%;left:50%;transform:translate(-50%,-50%) scale(.5);
+  z-index:2500;pointer-events:none;
+  padding:16px 32px;border-radius:20px;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b,#ef4444);
+  color:#fff;font-weight:900;font-size:1.4rem;
+  text-shadow:0 2px 4px rgba(0,0,0,.3);
+  box-shadow:0 20px 60px rgba(251,191,36,.6),0 0 100px rgba(251,191,36,.4);
+  border:3px solid #fff;letter-spacing:1px;
+  animation:winnerPop 1.2s cubic-bezier(.34,1.56,.64,1) forwards;
+  white-space:nowrap;
+}
+@keyframes winnerPop{
+  0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
+  30%{transform:translate(-50%,-50%) scale(1.15);opacity:1}
+  70%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:0}
+}
 /* ===== FOOTER ===== */
 .footer{width:100%;max-width:480px;text-align:center;padding:10px 0 6px 0;font-size:.7rem;font-weight:600;letter-spacing:.5px;margin-top:4px}
 .rainbow-text{background:linear-gradient(270deg,#ff6b6b,#feca57,#48dbfb,#ff9ff3,#54a0ff,#5f27cd);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rainbow 4s ease-in-out infinite;display:inline-block}
@@ -334,6 +390,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 @media (max-width:480px){
   .btn{font-size:.78rem}
   .stat-card .v{font-size:1.15rem}
+  .session-badge{display:none}
 }
 </style>
 </head>
@@ -359,7 +416,10 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 <!-- HEADER -->
 <div class="casino-header">
   <div class="casino-title">♠️ Rix Hold'em Pro ♠️</div>
-  <div class="level-badge" id="level-badge">⭐ Level 1 · 0 XP</div>
+  <div>
+    <span class="level-badge" id="level-badge">⭐ Level 1 · 0 XP</span>
+    <span class="session-badge" id="session-badge"></span>
+  </div>
 </div>
 
 <!-- TABLE -->
@@ -378,6 +438,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
         <div class="player-name" id="name-2">Bot 2</div>
         <div class="player-chips" id="chips-2">0</div>
         <div class="dealer-marker" id="d-2" style="display:none;">D</div>
+        <div class="player-bet" id="bet-2"></div>
       </div>
       <div class="cards-row" id="cards-2"></div>
     </div>
@@ -389,6 +450,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
         <div class="player-name" id="name-1">Bot 1</div>
         <div class="player-chips" id="chips-1">0</div>
         <div class="dealer-marker" id="d-1" style="display:none;">D</div>
+        <div class="player-bet" id="bet-1"></div>
       </div>
       <div class="cards-row" id="cards-1"></div>
     </div>
@@ -400,6 +462,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
         <div class="player-name" id="name-3">Bot 3</div>
         <div class="player-chips" id="chips-3">0</div>
         <div class="dealer-marker" id="d-3" style="display:none;">D</div>
+        <div class="player-bet" id="bet-3"></div>
       </div>
       <div class="cards-row" id="cards-3"></div>
     </div>
@@ -412,15 +475,16 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
         <div class="player-name" id="name-0">Bạn</div>
         <div class="player-chips" id="chips-0">0</div>
         <div class="dealer-marker" id="d-0" style="display:none;">D</div>
+        <div class="player-bet" id="bet-0"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- INFO BAR: Hand strength + Timer -->
+<!-- INFO BAR -->
 <div class="info-bar">
   <div class="hand-strength" id="hand-strength">
-    <span>🃏</span>
+    <span class="strength-icon">🃏</span>
     <span class="strength-name" id="strength-name">Chưa có bài</span>
   </div>
   <div class="timer-bar" id="timer-bar" style="display:none">
@@ -431,8 +495,8 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 <!-- CONTROLS -->
 <div class="controls-area">
   <div class="action-btns">
-    <button class="btn btn-fold" id="btn-fold" onclick="handleHumanChoice('fold')">Fold</button>
-    <button class="btn btn-check" id="btn-check" onclick="handleHumanChoice('check')">Check</button>
+    <button class="btn btn-fold" id="btn-fold" onclick="handleHumanChoice('fold')">Fold <span style="opacity:.7;font-size:.7rem">(F)</span></button>
+    <button class="btn btn-check" id="btn-check" onclick="handleHumanChoice('check')">Check <span style="opacity:.7;font-size:.7rem">(C)</span></button>
     <button class="btn btn-call" id="btn-call" onclick="handleHumanChoice('call')">Call</button>
   </div>
   <div class="raise-presets">
@@ -442,12 +506,12 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
     <button class="preset-btn allin" onclick="setRaisePreset('allin')">ALL-IN 🔥</button>
   </div>
   <div class="raise-control-group">
-    <button class="btn btn-step" onclick="adjustRaiseInput(-10)">−10</button>
+    <button class="btn-step" onclick="adjustRaiseInput(-10)">−</button>
     <input type="number" id="raise-amount" value="10" min="10" step="10">
-    <button class="btn btn-step" onclick="adjustRaiseInput(10)">+10</button>
-    <button class="btn btn-raise" id="btn-raise" onclick="handleHumanChoice('raise')">Raise</button>
+    <button class="btn-step" onclick="adjustRaiseInput(10)">+</button>
+    <button class="btn btn-raise" id="btn-raise" onclick="handleHumanChoice('raise')">Raise <span style="opacity:.7;font-size:.7rem">(R)</span></button>
   </div>
-  <button class="btn btn-next" id="btn-next" onclick="startNewHand()" style="display:none;">Ván Tiếp ➔</button>
+  <button class="btn btn-next" id="btn-next" onclick="startNewHand()" style="display:none;">Ván Tiếp ➔ <span style="opacity:.7;font-size:.7rem">(Space)</span></button>
 </div>
 
 <!-- LOG -->
@@ -455,7 +519,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 
 <!-- FOOTER -->
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.01</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.02</span> from bao with love ♡</span>
 </div>
 
 <!-- TOAST -->
@@ -471,40 +535,33 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
     <div class="modal-section">
       <h4>🏆 Xếp hạng 5 lá (cao → thấp)</h4>
       <div class="hand-ranks">
-        <div class="hand-rank-item"><span class="rank-num">#1</span><span class="rank-name">Thùng Phá Sảnh</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#2</span><span class="rank-name">Tứ Quý</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#3</span><span class="rank-name">Cù Lũ</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#4</span><span class="rank-name">Thùng</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#5</span><span class="rank-name">Sảnh</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#6</span><span class="rank-name">Xám Cơ</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#7</span><span class="rank-name">Hai Đôi</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#8</span><span class="rank-name">Một Đôi</span></div>
-        <div class="hand-rank-item"><span class="rank-num">#9</span><span class="rank-name">Mậu Thần</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#1</span><span class="rank-name">Royal Flush — Sảnh Rồng</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#2</span><span class="rank-name">Straight Flush — Thùng Phá Sảnh</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#3</span><span class="rank-name">Four of a Kind — Tứ Quý</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#4</span><span class="rank-name">Full House — Cù Lũ</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#5</span><span class="rank-name">Flush — Thùng</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#6</span><span class="rank-name">Straight — Sảnh</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#7</span><span class="rank-name">Three of a Kind — Xám Cơ</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#8</span><span class="rank-name">Two Pair — Hai Đôi</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#9</span><span class="rank-name">One Pair — Một Đôi</span></div>
+        <div class="hand-rank-item"><span class="rank-num">#10</span><span class="rank-name">High Card — Mậu Thần</span></div>
       </div>
     </div>
     <div class="modal-section">
-      <h4>🎯 Cách chơi</h4>
-      <ul>
-        <li>Bạn có 2 lá riêng + 5 lá chung = 7 lá</li>
-        <li>Chọn 5 lá tốt nhất để tạo hand mạnh nhất</li>
-        <li>4 vòng: Preflop → Flop → Turn → River</li>
-        <li>Đặt cược, raise, call, fold</li>
-        <li>Timer 30s mỗi lượt — hết giờ auto-fold</li>
+      <h4>⌨️ Phím tắt</h4>
+      <ul style="list-style:none;padding:0">
+        <li><span class="kbd">F</span> Fold</li>
+        <li><span class="kbd">C</span> Check / Call</li>
+        <li><span class="kbd">R</span> Raise</li>
+        <li><span class="kbd">Space</span> Ván tiếp</li>
+        <li><span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span> Preset raise</li>
       </ul>
     </div>
     <div class="modal-section">
-      <h4>🏷️ Vị trí trên bàn</h4>
+      <h4>💡 Mẹo chơi</h4>
       <ul>
-        <li><code>D</code> = Dealer (chia bài)</li>
-        <li><code>SB</code> = Small Blind (cược nhỏ)</li>
-        <li><code>BB</code> = Big Blind (cược lớn)</li>
-      </ul>
-    </div>
-    <div class="modal-section">
-      <h4>💡 Mẹo</h4>
-      <ul>
-        <li>Xem <strong>hand strength</strong> dưới bàn để biết bài mạnh/yếu</li>
-        <li>Dùng preset <strong>½ Pot / Pot / 2× Pot / All-in</strong></li>
+        <li>Xem <strong>hand strength</strong> màu sắc để biết bài mạnh/yếu</li>
+        <li>Timer 30s — hết giờ auto-fold</li>
         <li>Bot có bluff — đừng tin lời nói!</li>
         <li>Thắng ván để nhận XP, lên level</li>
       </ul>
@@ -538,7 +595,7 @@ input[type="number"]{width:80px;height:40px;border-radius:8px;border:1px solid v
 /* ================================================================
    0. VERSION
 ===============================================================*/
-const APP_VERSION = '150926.01';
+const APP_VERSION = '150926.02';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -652,8 +709,16 @@ function createConfetti(count = 60){
   }
 }
 
+function showWinnerBanner(text){
+  const el = document.createElement('div');
+  el.className = 'winner-banner';
+  el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1300);
+}
+
 /* ================================================================
-   5. CELEB POOL (30)
+   5. CELEB POOL
 ===============================================================*/
 const CELEB_POOL = [
   {name:"Cristiano Ronaldo",style:"aggressive"},{name:"Lionel Messi",style:"smart"},
@@ -701,10 +766,10 @@ function botSay(pIdx, type){
 /* ================================================================
    7. PERSISTENT STATE
 ===============================================================*/
-const LS_STATS = 'rix_poker_stats_v3';
-const LS_ACH = 'rix_poker_ach_v3';
-const LS_SETTINGS = 'rix_poker_settings_v3';
-const SAVE_KEY = 'rix_poker_save_v3';
+const LS_STATS = 'rix_poker_stats_v4';
+const LS_ACH = 'rix_poker_ach_v4';
+const LS_SETTINGS = 'rix_poker_settings_v4';
+const SAVE_KEY = 'rix_poker_save_v4';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
@@ -739,6 +804,8 @@ function loadSettings(){
 let stats = loadStats();
 let achievements = loadAch();
 let settings = loadSettings();
+// Session stats
+let sessionStats = { wins: 0, losses: 0, net: 0, startingChips: 1000 };
 
 function saveStats(){ try{ localStorage.setItem(LS_STATS, JSON.stringify(stats)); }catch(e){} }
 function saveAch(){ try{ localStorage.setItem(LS_ACH, JSON.stringify(achievements)); }catch(e){} }
@@ -817,6 +884,14 @@ function updateLevelBadge(){
   const el = $('level-badge');
   if(el) el.textContent = `⭐ Level ${stats.level} · ${stats.xp} XP`;
 }
+function updateSessionBadge(){
+  const el = $('session-badge');
+  if(!el) return;
+  const net = sessionStats.net;
+  const sign = net >= 0 ? '+' : '';
+  const cls = net >= 0 ? 'plus' : 'minus';
+  el.innerHTML = `Ván này: <span class="${cls}">${sign}${fmt(net)}</span>`;
+}
 
 /* ================================================================
    10. MODAL HELPERS
@@ -834,7 +909,7 @@ const HUMAN_START_CHIPS = 1000;
 const SMALL_BLIND = 5;
 const BIG_BLIND = 10;
 const STRICT_MIN_RAISE = 10;
-const TURN_TIME = 30; // seconds
+const TURN_TIME = 30;
 
 let players = [];
 let deck = [], communityCards = [];
@@ -897,7 +972,7 @@ function setRaisePreset(type){
   Sound.playChip();
   vibrate(15);
 }
-function chipFlyToPot(fromIdx, amount){
+function chipFlyToPot(fromIdx){
   const from = $(`seat-${fromIdx}`);
   const potEl = $('pot-display');
   if(!from || !potEl) return;
@@ -981,7 +1056,7 @@ async function animateDealCard(targetElemId){
 }
 
 /* ================================================================
-   14. HAND STRENGTH DISPLAY
+   14. HAND STRENGTH
 ===============================================================*/
 function describeHoleCards(hole){
   if(!hole || hole.length < 2) return null;
@@ -994,7 +1069,7 @@ function describeHoleCards(hole){
   if(isPair) return `Đôi ${rankName(high)}`;
   if(high === 14 && low === 13) return suited ? 'AK suited 💎' : 'AK offsuit';
   if(high === 14 && low === 12) return suited ? 'AQ suited 💎' : 'AQ offsuit';
-  if(suited && high - low === 1) return `${rankName(high)}${rankName(low)} suited (Sảnh tiềm năng)`;
+  if(suited && high - low === 1) return `${rankName(high)}${rankName(low)} suited`;
   if(high >= 12) return `${rankName(high)}${rankName(low)}${suited ? ' suited' : ''}`;
   return `${rankName(high)} ${rankName(low)}${suited ? ' suited' : ''}`;
 }
@@ -1002,34 +1077,43 @@ function updateHandStrength(){
   const p = players[0];
   const el = $('hand-strength');
   const nameEl = $('strength-name');
+  const iconEl = el ? el.querySelector('.strength-icon') : null;
   if(!el || !nameEl) return;
   el.className = 'hand-strength';
   if(!p || !p.hand || p.hand.length === 0){
     nameEl.textContent = 'Chưa có bài';
+    if(iconEl) iconEl.textContent = '🃏';
     return;
   }
   if(p.folded){
-    nameEl.textContent = '🏳️ Bạn đã fold';
+    nameEl.textContent = 'Bạn đã fold';
+    if(iconEl) iconEl.textContent = '🏳️';
     el.classList.add('strength-bad');
     return;
   }
   if(p.hand.length === 2 && communityCards.length === 0){
     const desc = describeHoleCards(p.hand);
     nameEl.textContent = desc || 'Bài preflop';
-    // Simple heuristic
+    if(iconEl) iconEl.textContent = '🃏';
     const isPair = p.hand[0].rank === p.hand[1].rank;
     const high = Math.max(p.hand[0].rank, p.hand[1].rank);
-    if(isPair && high >= 10){ el.classList.add('strength-great'); }
-    else if(isPair || high === 14){ el.classList.add('strength-good'); }
+    if(isPair && high >= 10){ el.classList.add('strength-great'); if(iconEl) iconEl.textContent = '🔥'; }
+    else if(isPair || high === 14){ el.classList.add('strength-good'); if(iconEl) iconEl.textContent = '✨'; }
     else if(high >= 10){ el.classList.add('strength-ok'); }
     else { el.classList.add('strength-bad'); }
     return;
   }
-  // Postflop: evaluate 7 cards
   const all = [...p.hand, ...communityCards];
   if(all.length >= 5){
     const result = evaluate7Cards(all);
     nameEl.textContent = result.name;
+    if(iconEl){
+      if(result.category >= 8) iconEl.textContent = '👑';
+      else if(result.category >= 6) iconEl.textContent = '💎';
+      else if(result.category >= 4) iconEl.textContent = '🔥';
+      else if(result.category >= 2) iconEl.textContent = '✨';
+      else iconEl.textContent = '🃏';
+    }
     if(result.category >= 5) el.classList.add('strength-great');
     else if(result.category >= 3) el.classList.add('strength-good');
     else if(result.category === 2) el.classList.add('strength-ok');
@@ -1060,7 +1144,6 @@ function startTurnTimer(){
     else if(turnTimeLeft <= 10) fill.className = 'timer-fill warning';
     if(turnTimeLeft <= 0){
       stopTurnTimer();
-      // auto action
       if(isHumanTurnWaiting){
         const diff = currentHighestBet - players[0].currentBet;
         if(diff === 0){
@@ -1085,26 +1168,36 @@ function stopTurnTimer(){
 ===============================================================*/
 function updateUI(){
   updatePotBox(false);
-  const totalChips = players.reduce((s,p) => s + p.chips, 0) || 1;
   players.forEach((p, i) => {
     const nameEl = $(`name-${i}`);
     const chipsEl = $(`chips-${i}`);
     const dEl = $(`d-${i}`);
     const posEl = $(`pos-${i}`);
+    const betEl = $(`bet-${i}`);
     if(nameEl) nameEl.innerText = p.name;
     if(chipsEl) chipsEl.innerText = fmt(p.chips);
     if(dEl) dEl.style.display = (dealerIdx === i) ? 'flex' : 'none';
 
-    // Position badge
+    // Position badge — FIX: dùng class pb-* không conflict với .btn
     if(posEl){
       posEl.style.display = 'none';
       posEl.className = 'position-badge';
       const sbIdx = (dealerIdx + 1) % 4;
       const bbIdx = (dealerIdx + 2) % 4;
       if(gameStage !== 'END' && gameStage !== 'SHOWDOWN'){
-        if(i === dealerIdx){ posEl.style.display = ''; posEl.classList.add('btn'); posEl.textContent = 'BTN'; }
-        else if(i === sbIdx){ posEl.style.display = ''; posEl.classList.add('sb'); posEl.textContent = 'SB'; }
-        else if(i === bbIdx){ posEl.style.display = ''; posEl.classList.add('bb'); posEl.textContent = 'BB'; }
+        if(i === dealerIdx){ posEl.style.display = ''; posEl.classList.add('pb-btn'); posEl.textContent = 'BTN'; }
+        else if(i === sbIdx){ posEl.style.display = ''; posEl.classList.add('pb-sb'); posEl.textContent = 'SB'; }
+        else if(i === bbIdx){ posEl.style.display = ''; posEl.classList.add('pb-bb'); posEl.textContent = 'BB'; }
+      }
+    }
+
+    // Bet amount badge
+    if(betEl){
+      if(p.currentBet > 0){
+        betEl.classList.add('show');
+        betEl.textContent = fmt(p.currentBet);
+      } else {
+        betEl.classList.remove('show');
       }
     }
 
@@ -1142,6 +1235,17 @@ function updateUI(){
   $('btn-raise').disabled = !isHumanTurn || isGameEnd;
   $('btn-next').style.display = isGameEnd ? 'block' : 'none';
 
+  // Show call amount on button
+  const callBtn = $('btn-call');
+  if(callBtn){
+    if(humanDiff > 0 && isHumanTurn){
+      const callAmt = Math.min(players[0].chips, humanDiff);
+      callBtn.textContent = `Call ${fmt(callAmt)}`;
+    } else {
+      callBtn.textContent = 'Call';
+    }
+  }
+
   const raiseInput = $('raise-amount');
   const minAllowedRaise = Math.max(STRICT_MIN_RAISE, currentHighestBet + minRaiseDelta - players[0].currentBet);
   raiseInput.min = minAllowedRaise;
@@ -1153,6 +1257,7 @@ function updateUI(){
   }
 
   updateHandStrength();
+  updateSessionBadge();
 }
 
 function checkBustOuts(){
@@ -1440,7 +1545,7 @@ async function simulateAITurn(p){
 }
 
 /* ================================================================
-   19. CORE ENGINE
+   19. CORE
 ===============================================================*/
 function postBet(pIdx, amount){
   const actual = Math.min(amount, players[pIdx].chips);
@@ -1449,7 +1554,7 @@ function postBet(pIdx, amount){
   pot += actual;
   if(players[pIdx].chips === 0) players[pIdx].allIn = true;
   Sound.playChip();
-  chipFlyToPot(pIdx, actual);
+  chipFlyToPot(pIdx);
   updatePotBox(true);
   saveGame();
 }
@@ -1469,17 +1574,10 @@ function buildSidePots(){
     let potAmount = 0;
     let eligible = [];
     for(let b of sorted){
-      if(b.bet >= minBet){
-        potAmount += minBet;
-        eligible.push(b.id);
-        b.bet -= minBet;
-      }
+      if(b.bet >= minBet){ potAmount += minBet; eligible.push(b.id); b.bet -= minBet; }
     }
     for(let i = sorted.length-1; i >= 0; i--) if(sorted[i].bet === 0) sorted.splice(i,1);
-    if(potAmount > 0){
-      pots.push({amount:potAmount, eligiblePlayers:eligible});
-      remaining -= potAmount;
-    }
+    if(potAmount > 0){ pots.push({amount:potAmount, eligiblePlayers:eligible}); remaining -= potAmount; }
     if(sorted.length === 0) break;
   }
   if(remaining > 0 && pots.length > 0) pots[pots.length-1].amount += remaining;
@@ -1512,10 +1610,7 @@ async function runTurnEngine(){
     if(sidePots.length === 0) buildSidePots();
     let totalWin = 0;
     for(let p of sidePots){
-      if(p.eligiblePlayers.includes(winner.id)){
-        winner.chips += p.amount;
-        totalWin += p.amount;
-      }
+      if(p.eligiblePlayers.includes(winner.id)){ winner.chips += p.amount; totalWin += p.amount; }
     }
     if(totalWin === 0 && pot > 0){ winner.chips += pot; totalWin = pot; }
     pot = 0;
@@ -1523,6 +1618,11 @@ async function runTurnEngine(){
     log(`🏆 ${winner.name} THẮNG POT ${fmtFull(totalWin)}!`, 'winner');
     $('seat-' + winner.id).classList.add('winner');
     showWinnerEffects(winner.id);
+    if(winner.isHuman){
+      showWinnerBanner(`🏆 BẠN THẮNG ${fmt(totalWin)}!`);
+    } else {
+      showWinnerBanner(`🏆 ${winner.name} THẮNG!`);
+    }
     gameStage = 'END';
     endHandStats(winner.id, totalWin);
     updateUI();
@@ -1582,6 +1682,7 @@ async function advanceStage(){
     return;
   }
   activeTurnIdx = (dealerIdx + 1) % 4;
+  updateUI();
   saveGame();
   runTurnEngine();
 }
@@ -1613,22 +1714,18 @@ async function executeShowdown(){
     } else {
       botSay(w.player.id, 'win');
     }
-    players.forEach(p => {
-      if(!p.isHuman && p.id !== w.player.id) p.tilt = Math.min(100, p.tilt + 10);
-    });
+    players.forEach(p => { if(!p.isHuman && p.id !== w.player.id) p.tilt = Math.min(100, p.tilt + 10); });
   });
 
-  const table = $('poker-table');
-  table.classList.add('shake');
-  Sound.playShake();
-  setTimeout(() => table.classList.remove('shake'), 400);
-
   if(winners.length === 1){
-    log(`🎉 ${winners[0].player.name} THẮNG POT ${fmtFull(totalWon)} [${winners[0].name}]!`, 'winner');
-    endHandStats(winners[0].player.id, totalWon);
+    const w = winners[0];
+    log(`🎉 ${w.player.name} THẮNG POT ${fmtFull(totalWon)} [${w.name}]!`, 'winner');
+    showWinnerBanner(w.player.isHuman ? `🏆 BẠN THẮNG ${fmt(totalWon)}!` : `🏆 ${w.player.name}`);
+    endHandStats(w.player.id, totalWon);
   } else {
     log(`🤝 HÒA! Chia ${fmtFull(totalWon)} cho ${winners.map(w=>w.player.name).join(', ')}!`, 'gold');
     const humanWon = winners.some(w => w.player.isHuman);
+    showWinnerBanner(humanWon ? `🤝 HÒA — Nhận ${fmt(totalWon)}` : `🤝 HÒA`);
     endHandStats(humanWon ? 0 : -1, totalWon, true);
   }
 
@@ -1649,17 +1746,18 @@ function endHandStats(winnerId, potWon, isDraw){
     if(stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
     if(potWon > stats.biggestPot) stats.biggestPot = potWon;
     if(players[0].chips > stats.peakChips) stats.peakChips = players[0].chips;
-    // All-in win?
     if(players.some(p => p.id !== 0 && p.allIn)) stats.allInWins++;
-    // XP for win
     addXP(20 + Math.floor(potWon / 100));
     showToast(`🎉 Thắng! +${20 + Math.floor(potWon/100)} XP`, 'win');
     createConfetti(60);
     vibrate([40, 60, 40]);
+    sessionStats.wins++;
+    sessionStats.net += (potWon - players[0].bet);
   } else if(!isDraw){
     stats.losses++;
     stats.streak = 0;
     addXP(5);
+    sessionStats.losses++;
   } else {
     stats.streak = 0;
     addXP(8);
@@ -1676,7 +1774,6 @@ function endHandStats(winnerId, potWon, isDraw){
       }
     }
   }
-  // History
   stats.history.unshift({
     result: humanWon ? 'win' : isDraw ? 'draw' : 'loss',
     potWon,
@@ -1684,9 +1781,9 @@ function endHandStats(winnerId, potWon, isDraw){
     time: Date.now()
   });
   if(stats.history.length > 10) stats.history.length = 10;
-
   saveStats();
   checkAchievements();
+  updateSessionBadge();
 }
 
 /* ================================================================
@@ -1786,6 +1883,7 @@ async function handleHumanChoice(action){
 
   const p = players[0];
   const diff = currentHighestBet - p.currentBet;
+  const startChips = p.chips;
 
   if(action === 'fold'){
     p.folded = true;
@@ -1857,11 +1955,8 @@ async function startNewHand(){
   raiseInputUserChanged = false;
 
   players.forEach(p => {
-    p.hand = [];
-    p.folded = false;
-    p.currentBet = 0;
-    p.hasActed = false;
-    p.allIn = false;
+    p.hand = []; p.folded = false; p.currentBet = 0;
+    p.hasActed = false; p.allIn = false;
   });
 
   log(`--- Ván mới! ---`, 'gold');
@@ -1888,7 +1983,33 @@ async function startNewHand(){
 }
 
 /* ================================================================
-   26. STATS MODAL
+   26. KEYBOARD SHORTCUTS
+===============================================================*/
+document.addEventListener('keydown', e => {
+  if(e.target.matches('input, textarea')) return;
+  const key = e.key.toLowerCase();
+  // End state — space for next hand
+  if((gameStage === 'END' || gameStage === 'SHOWDOWN') && (e.key === ' ' || key === 'enter')){
+    e.preventDefault();
+    if($('btn-next').style.display !== 'none') startNewHand();
+    return;
+  }
+  if(!isHumanTurnWaiting) return;
+  if(key === 'f'){ e.preventDefault(); handleHumanChoice('fold'); }
+  else if(key === 'c'){ e.preventDefault();
+    const diff = currentHighestBet - players[0].currentBet;
+    if(diff === 0) handleHumanChoice('check');
+    else handleHumanChoice('call');
+  }
+  else if(key === 'r'){ e.preventDefault(); handleHumanChoice('raise'); }
+  else if(e.key === '1'){ setRaisePreset('half'); }
+  else if(e.key === '2'){ setRaisePreset('pot'); }
+  else if(e.key === '3'){ setRaisePreset('2x'); }
+  else if(e.key === '4'){ setRaisePreset('allin'); }
+});
+
+/* ================================================================
+   27. STATS MODAL
 ===============================================================*/
 function showStats(){
   const winRate = stats.gamesPlayed ? ((stats.wins / stats.gamesPlayed) * 100).toFixed(1) : '0.0';
@@ -1953,7 +2074,7 @@ function resetStats(){
 }
 
 /* ================================================================
-   27. ACHIEVEMENTS MODAL
+   28. ACHIEVEMENTS MODAL
 ===============================================================*/
 function showAchievements(){
   const html = ACHIEVEMENTS.map(a => {
@@ -1968,7 +2089,7 @@ function showAchievements(){
 }
 
 /* ================================================================
-   28. THEME & SOUND & RESET
+   29. THEME / SOUND / RESET
 ===============================================================*/
 function applyTheme(){
   document.body.classList.toggle('light', settings.theme === 'light');
@@ -1995,13 +2116,14 @@ function resetAll(){
   if(!confirm('Chơi lại từ đầu? Reset cả chips và stats.')) return;
   localStorage.removeItem(SAVE_KEY);
   stats = JSON.parse(JSON.stringify(defaultStats));
+  sessionStats = { wins: 0, losses: 0, net: 0, startingChips: HUMAN_START_CHIPS };
   saveStats();
   init(true);
   showToast('Đã reset!', 'info');
 }
 
 /* ================================================================
-   29. INIT
+   30. INIT
 ===============================================================*/
 function init(isReset){
   Sound.enabled = settings.sound;
@@ -2015,7 +2137,6 @@ function init(isReset){
     btn.classList.toggle('muted', !Sound.enabled);
   }
 
-  // Wire toolbar
   $('btn-sound').addEventListener('click', toggleSound);
   $('btn-stats').addEventListener('click', showStats);
   $('btn-ach').addEventListener('click', showAchievements);
@@ -2029,6 +2150,7 @@ function init(isReset){
   if(loaded && gameStage !== 'END'){
     players.forEach(p => { if(!p.style) p.style = 'smart'; });
     if(deck.length < 12) createDeck();
+    sessionStats.startingChips = players[0].chips;
     updateUI();
     log(`📀 Đã khôi phục ván chơi.`, 'gold');
     if(gameStage !== 'SHOWDOWN' && gameStage !== 'END'){
@@ -2049,10 +2171,11 @@ function init(isReset){
       {id:2, name:botNames[1], chips:getRandomBotStack(), hand:[], isHuman:false, folded:false, currentBet:0, hasActed:false, style:botStyles[1], allIn:false, tilt:0},
       {id:3, name:botNames[2], chips:getRandomBotStack(), hand:[], isHuman:false, folded:false, currentBet:0, hasActed:false, style:botStyles[2], allIn:false, tilt:0}
     ];
+    sessionStats = { wins: 0, losses: 0, net: 0, startingChips: HUMAN_START_CHIPS };
     document.querySelectorAll('.seat').forEach(s => s.classList.remove('winner'));
     createDeck();
     log('♠️ Chào mừng đến với Rix Hold\'em Pro!', 'gold');
-    log('💡 Xem hand strength dưới bàn để biết bài mạnh/yếu.', 'special');
+    log('💡 Xem hand strength dưới bàn. Phím: F/C/R.', 'special');
     startNewHand();
   }
   updateUI();
