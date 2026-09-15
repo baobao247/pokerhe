@@ -53,24 +53,100 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .poker-table.shake{animation:shake .3s ease-in-out}
 @keyframes shake{0%{transform:rotate(0)}25%{transform:rotate(1.5deg)}75%{transform:rotate(-1.5deg)}100%{transform:rotate(0)}}
 
-.table-center{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;pointer-events:none}
+.table-center{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;pointer-events:none}
 .pot-box{background:rgba(15,23,42,.95);border:1.5px solid var(--gold);padding:4px 14px;border-radius:20px;color:var(--gold);font-weight:900;font-size:clamp(.8rem,3vw,1rem);box-shadow:0 0 14px rgba(251,191,36,.4);white-space:nowrap;text-align:center;line-height:1.2;transition:transform .2s ease}
 .pot-box.bump{animation:potBump .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes potBump{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .community-cards{display:flex;gap:3px;justify-content:center;align-items:center;min-height:var(--card-h)}
 
-/* SEATS */
-.seat{position:absolute;display:flex;flex-direction:column;align-items:center;z-index:5;gap:4px}
-.seat-top{top:42px;left:50%;transform:translateX(-50%);width:110px}
-.seat-left{top:50%;left:14px;transform:translateY(-50%);width:100px}
-.seat-right{top:50%;right:14px;transform:translateY(-50%);width:100px}
-/* User seat — DOM order: cards first (via JS), avatar second */
-.seat-bottom{bottom:14px;left:50%;transform:translateX(-50%);width:130px;z-index:6}
+/* ============================================================
+   SEATS — using CSS GRID with explicit grid-template-areas
+   ============================================================ */
+.seat{
+  position:absolute;
+  display:grid;
+  justify-items:center;
+  align-items:center;
+  gap:4px;
+  z-index:5;
+}
 
-.avatar-box{position:relative;background:rgba(15,23,42,.95);border:1.5px solid #475569;border-radius:8px;padding:4px 6px;text-align:center;width:100%;box-shadow:0 4px 10px rgba(0,0,0,.8);backdrop-filter:blur(4px);transition:all .25s ease;flex-shrink:0}
+/* Avatar box is always a single unit */
+.avatar-box{
+  position:relative;
+  background:rgba(15,23,42,.95);
+  border:1.5px solid #475569;
+  border-radius:8px;
+  padding:4px 6px;
+  text-align:center;
+  width:100%;
+  box-shadow:0 4px 10px rgba(0,0,0,.8);
+  backdrop-filter:blur(4px);
+  transition:all .25s ease;
+}
+
+/* CARDS ROW */
+.cards-row{
+  display:none;
+  gap:3px;
+  justify-content:center;
+  align-items:center;
+  height:var(--card-h);
+}
+.cards-row.has-cards{display:flex}
+
+/* ========== SEAT TOP: avatar on top, cards below ========== */
+.seat-top{
+  top:48px;left:50%;transform:translateX(-50%);
+  width:110px;
+  grid-template-areas:
+    "avatar"
+    "cards";
+  grid-template-rows:auto auto;
+}
+.seat-top .avatar-box{grid-area:avatar}
+.seat-top .cards-row{grid-area:cards}
+
+/* ========== SEAT LEFT: avatar on top, cards below ========== */
+.seat-left{
+  top:50%;left:14px;transform:translateY(-50%);
+  width:100px;
+  grid-template-areas:
+    "avatar"
+    "cards";
+  grid-template-rows:auto auto;
+}
+.seat-left .avatar-box{grid-area:avatar}
+.seat-left .cards-row{grid-area:cards}
+
+/* ========== SEAT RIGHT: avatar on top, cards below ========== */
+.seat-right{
+  top:50%;right:14px;transform:translateY(-50%);
+  width:100px;
+  grid-template-areas:
+    "avatar"
+    "cards";
+  grid-template-rows:auto auto;
+}
+.seat-right .avatar-box{grid-area:avatar}
+.seat-right .cards-row{grid-area:cards}
+
+/* ========== SEAT BOTTOM: CARDS on top, avatar BELOW ========== */
+.seat-bottom{
+  bottom:14px;left:50%;transform:translateX(-50%);
+  width:130px;z-index:6;
+  grid-template-areas:
+    "cards"
+    "avatar";
+  grid-template-rows:auto auto;
+}
+.seat-bottom .avatar-box{grid-area:avatar}
+.seat-bottom .cards-row{grid-area:cards}
+
+/* AVATAR STATES */
 .seat.active-turn .avatar-box{border-color:var(--gold);box-shadow:0 0 16px var(--gold);transform:scale(1.05);animation:pulse-avatar .8s ease-in-out infinite alternate}
 @keyframes pulse-avatar{0%{transform:scale(1.05);box-shadow:0 0 12px var(--gold)}100%{transform:scale(1.08);box-shadow:0 0 22px var(--gold),0 0 40px rgba(251,191,36,.2)}}
-.seat.winner .avatar-box{border-color:#4ade80;box-shadow:0 0 40px #4ade80,0 0 80px rgba(74,222,128,.5);animation:pulse-win .6s ease-in-out infinite alternate;z-index:10}
+.seat.winner .avatar-box{border-color:#4ade80;box-shadow:0 0 40px #4ade80,0 0 80px rgba(74,222,128,.5);animation:pulse-win .6s ease-in-out infinite alternate}
 @keyframes pulse-win{0%{transform:scale(1);box-shadow:0 0 20px #4ade80}100%{transform:scale(1.1);box-shadow:0 0 50px #4ade80,0 0 100px rgba(74,222,128,.4)}}
 .seat.folded{opacity:.45;filter:grayscale(.7)}
 
@@ -80,43 +156,42 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .player-bet{display:none;margin-top:2px;font-size:.58rem;font-weight:900;color:var(--gold);background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);border-radius:6px;padding:0 6px;line-height:1.4;white-space:nowrap}
 .player-bet.show{display:inline-block}
 
-.dealer-marker{position:absolute;top:-6px;right:-6px;background:#ef4444;color:#fff;font-weight:900;font-size:.55rem;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6)}
+.dealer-marker{position:absolute;top:-6px;right:-6px;background:#ef4444;color:#fff;font-weight:900;font-size:.55rem;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6);z-index:3}
 
-.position-badge{position:absolute;top:-8px;left:-8px;padding:2px 7px;border-radius:8px;font-size:.55rem;font-weight:900;line-height:1;border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6);white-space:nowrap;z-index:10;letter-spacing:.04em}
+.position-badge{position:absolute;top:-8px;left:-8px;padding:2px 7px;border-radius:8px;font-size:.55rem;font-weight:900;line-height:1;border:1.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.6);white-space:nowrap;z-index:3;letter-spacing:.04em}
 .position-badge.pb-btn{background:#8b5cf6;color:#fff}
 .position-badge.pb-sb{background:#3b82f6;color:#fff}
 .position-badge.pb-bb{background:#f59e0b;color:#fff}
 
-/* SPEECH BUBBLE */
+/* SPEECH BUBBLE — positioned ABOVE the seat, inside table bounds */
 .speech-bubble{
   position:absolute;
-  bottom:calc(100% + 3px);
+  top:-16px;
   left:50%;
-  transform:translateX(-50%) translateY(3px);
+  transform:translateX(-50%) translateY(4px);
   background:rgba(251,191,36,.95);
   color:#0f172a;
   font-weight:800;
-  font-size:.5rem;
-  padding:2px 6px;
-  border-radius:6px;
+  font-size:.52rem;
+  padding:2px 7px;
+  border-radius:7px;
   opacity:0;
   transition:opacity .18s ease, transform .18s ease;
   z-index:70;
   white-space:nowrap;
-  box-shadow:0 2px 5px rgba(0,0,0,.4);
+  box-shadow:0 3px 6px rgba(0,0,0,.5);
   pointer-events:none;
   line-height:1.15;
-  max-width:140px;
+  max-width:130px;
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.speech-bubble.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.speech-bubble.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
 
-/* CARDS ROW */
-.cards-row{display:none;gap:3px;justify-content:center;align-items:center;height:var(--card-h);flex-shrink:0}
-.cards-row.has-cards{display:flex}
-
-/* CARD */
+/* ========== CARD STYLES ========== */
 .card-container{perspective:1000px;width:var(--card-w);height:var(--card-h);flex-shrink:0}
 .card-inner{position:relative;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
 .card-container.flipped .card-inner{transform:rotateY(180deg)}
@@ -125,7 +200,13 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .card-front.red{color:#dc2626}
 .card-front.black{color:#0f172a}
 .card-front .suit{align-self:flex-end;font-size:.75rem;line-height:1}
-.card-back{background:repeating-linear-gradient(45deg,rgba(59,130,246,.18) 0 3px,transparent 3px 6px),repeating-linear-gradient(-45deg,rgba(59,130,246,.18) 0 3px,transparent 3px 6px),linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);border:1px solid var(--gold);transform:rotateY(0deg);position:relative}
+.card-back{
+  background:
+    repeating-linear-gradient(45deg,rgba(59,130,246,.18) 0 3px,transparent 3px 6px),
+    repeating-linear-gradient(-45deg,rgba(59,130,246,.18) 0 3px,transparent 3px 6px),
+    linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);
+  border:1px solid var(--gold);transform:rotateY(0deg);position:relative;
+}
 .card-back::after{content:'';position:absolute;inset:3px;border:1px solid rgba(251,191,36,.35);border-radius:2px}
 .card-container.glow-gold .card-front{box-shadow:0 0 20px var(--gold),0 0 40px rgba(251,191,36,.4);border-color:var(--gold)}
 .card-container.glow-rainbow .card-front{box-shadow:0 0 30px #fbbf24,0 0 60px #f59e0b,0 0 90px #ef4444;border-color:#fbbf24;animation:glowRainbow .6s ease-in-out infinite alternate}
@@ -262,8 +343,8 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
   .raise-control-group{grid-template-columns:38px 1fr 38px 1.2fr}
   .poker-table{height:clamp(360px,54vh,460px)}
   .card-container{width:32px;height:45px}
-  .speech-bubble{font-size:.45rem;padding:1px 5px}
-  .seat-top{top:36px}
+  .speech-bubble{font-size:.48rem;padding:1px 5px;max-width:110px}
+  .seat-top{top:42px}
 }
 @media (max-height:700px){
   .poker-table{height:380px}
@@ -303,6 +384,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="community-cards" id="community-cards"></div>
     </div>
 
+    <!-- SEAT TOP: avatar on top, cards below -->
     <div class="seat seat-top" id="seat-2">
       <div class="speech-bubble" id="bubble-2">Check</div>
       <div class="avatar-box">
@@ -315,6 +397,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-2"></div>
     </div>
 
+    <!-- SEAT LEFT: avatar on top, cards below -->
     <div class="seat seat-left" id="seat-1">
       <div class="speech-bubble" id="bubble-1">Check</div>
       <div class="avatar-box">
@@ -327,6 +410,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-1"></div>
     </div>
 
+    <!-- SEAT RIGHT: avatar on top, cards below -->
     <div class="seat seat-right" id="seat-3">
       <div class="speech-bubble" id="bubble-3">Check</div>
       <div class="avatar-box">
@@ -339,10 +423,9 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-3"></div>
     </div>
 
-    <!-- USER SEAT: cards-row comes FIRST in DOM so it renders ABOVE avatar-box -->
+    <!-- SEAT BOTTOM (user): avatar in DOM first, but grid places it BELOW cards via grid-template-areas -->
     <div class="seat seat-bottom" id="seat-0">
       <div class="speech-bubble" id="bubble-0">Check</div>
-      <div class="cards-row" id="cards-0"></div>
       <div class="avatar-box">
         <div class="position-badge" id="pos-0" style="display:none"></div>
         <div class="player-name" id="name-0">Bạn</div>
@@ -350,6 +433,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
         <div class="player-bet" id="bet-0"></div>
         <div class="dealer-marker" id="d-0" style="display:none;">D</div>
       </div>
+      <div class="cards-row" id="cards-0"></div>
     </div>
   </div>
 </div>
@@ -388,11 +472,12 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 <div class="log-box" id="log-box"></div>
 
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.15</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.16</span> from bao with love ♡</span>
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
 
+<!-- HELP -->
 <div class="modal-backdrop" id="modal-help">
   <div class="modal-content">
     <div class="modal-head">
@@ -451,7 +536,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 /* ============================================================
    VERSION
 ============================================================ */
-const APP_VERSION = '150926.15';
+const APP_VERSION = '150926.16';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -596,10 +681,10 @@ function botSay(pIdx, type){
 /* ============================================================
    PERSISTENT STATE
 ============================================================ */
-const LS_STATS = 'rix_poker_stats_v11';
-const LS_ACH = 'rix_poker_ach_v11';
-const LS_SETTINGS = 'rix_poker_settings_v11';
-const SAVE_KEY = 'rix_poker_save_v11';
+const LS_STATS = 'rix_poker_stats_v12';
+const LS_ACH = 'rix_poker_ach_v12';
+const LS_SETTINGS = 'rix_poker_settings_v12';
+const SAVE_KEY = 'rix_poker_save_v12';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
