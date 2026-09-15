@@ -41,8 +41,6 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 
 /* ============================================================
    TABLE CONTAINER — 2 khu vực riêng biệt
-   Khu 1: poker-table (chứa 3 bot + CARDS user)
-   Khu 2: user-panel (chứa AVATAR-BOX user — NGOÀI bàn)
    ============================================================ */
 .table-container{
   position:relative;
@@ -53,11 +51,12 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:8px; /* khoảng cách giữa bàn và user-panel */
+  gap:8px;
 }
 
 .poker-table{
-  position:relative;width:100%;height:clamp(360px,52vh,460px);
+  position:relative;width:100%;height:clamp(380px,54vh,480px);
+  padding-bottom:16px;
   background:var(--table-felt);
   border:10px solid #2d120d;border-radius:180px;
   box-shadow:0 0 0 2px var(--gold),inset 0 0 80px rgba(0,0,0,.95),0 10px 25px rgba(0,0,0,.9);
@@ -75,11 +74,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 @keyframes potBump{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .community-cards{display:flex;gap:3px;justify-content:center;align-items:center;min-height:var(--card-h)}
 
-/* ============================================================
-   SEATS — Flex column, DOM order quyết định layout
-   Bot top/left/right: [avatar][cards]
-   User (seat-bottom): [cards] only — avatar ở user-panel
-   ============================================================ */
+/* SEATS */
 .seat{
   position:absolute;
   display:flex;
@@ -91,8 +86,8 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .seat-top{top:22px;left:50%;transform:translateX(-50%);width:110px}
 .seat-left{top:50%;left:14px;transform:translateY(-50%);width:100px}
 .seat-right{top:50%;right:14px;transform:translateY(-50%);width:100px}
-/* User: chỉ có cards, căn giữa đáy bàn */
-.seat-bottom{bottom:14px;left:50%;transform:translateX(-50%);z-index:5}
+/* User: chỉ có cards, căn giữa đáy bàn — đẩy lên để không chạm viền cong */
+.seat-bottom{bottom:32px;left:50%;transform:translateX(-50%);z-index:5}
 
 .avatar-box{
   position:relative;
@@ -118,19 +113,15 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 }
 .cards-row.has-cards{display:flex}
 
-/* ============================================================
-   USER PANEL — Avatar-box của user, NGOÀI bàn
-   ============================================================ */
+/* USER PANEL — Avatar-box của user, NGOÀI bàn */
 .user-panel{
   width:130px;
   z-index:10;
   position:relative;
 }
-.user-panel .avatar-box{
-  width:100%;
-}
+.user-panel .avatar-box{width:100%}
 
-/* ACTIVE / WINNER STATES — áp dụng cho cả seat và user-panel */
+/* ACTIVE / WINNER STATES */
 .seat.active-turn .avatar-box,
 .user-panel.active-turn .avatar-box{
   border-color:var(--gold);box-shadow:0 0 16px var(--gold);transform:scale(1.05);
@@ -161,7 +152,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 .position-badge.pb-sb{background:#3b82f6;color:#fff}
 .position-badge.pb-bb{background:#f59e0b;color:#fff}
 
-/* SPEECH BUBBLE — absolute, đặt trên seat */
+/* SPEECH BUBBLE */
 .speech-bubble{
   position:absolute;
   left:50%;
@@ -186,7 +177,7 @@ body{background:var(--bg-dark);color:var(--text);display:flex;flex-direction:col
 }
 .speech-bubble.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ========== CARD STYLES ========== */
+/* CARDS */
 .card-container{perspective:1000px;width:var(--card-w);height:var(--card-h);flex-shrink:0}
 .card-inner{position:relative;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
 .card-container.flipped .card-inner{transform:rotateY(180deg)}
@@ -336,13 +327,15 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
   .stat-card .v{font-size:1.15rem}
   .session-badge{display:none}
   .raise-control-group{grid-template-columns:38px 1fr 38px 1.2fr}
-  .poker-table{height:clamp(340px,50vh,420px)}
+  .poker-table{height:clamp(360px,52vh,440px)}
   .card-container{width:32px;height:45px}
   .speech-bubble{font-size:.48rem;padding:1px 5px;max-width:110px}
   .seat-top{top:18px}
+  .seat-bottom{bottom:28px}
 }
 @media (max-height:700px){
-  .poker-table{height:340px}
+  .poker-table{height:360px}
+  .seat-bottom{bottom:26px}
 }
 </style>
 </head>
@@ -418,14 +411,14 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
       <div class="cards-row" id="cards-3"></div>
     </div>
 
-    <!-- SEAT BOTTOM (USER): CHỈ có cards + bubble. Avatar nằm ở user-panel bên dưới -->
+    <!-- SEAT BOTTOM (USER): CHỈ có cards + bubble -->
     <div class="seat seat-bottom" id="seat-0">
       <div class="speech-bubble" id="bubble-0">Check</div>
       <div class="cards-row" id="cards-0"></div>
     </div>
   </div>
 
-  <!-- USER PANEL: Avatar-box của user, NGOÀI bàn, dưới bàn -->
+  <!-- USER PANEL: avatar-box NGOÀI bàn -->
   <div class="user-panel" id="user-panel">
     <div class="avatar-box">
       <div class="position-badge" id="pos-0" style="display:none"></div>
@@ -471,7 +464,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 <div class="log-box" id="log-box"></div>
 
 <div class="footer">
-  <span class="rainbow-text">♡ <span id="app-version">150926.19</span> from bao with love ♡</span>
+  <span class="rainbow-text">♡ <span id="app-version">150926.20</span> from bao with love ♡</span>
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
@@ -535,7 +528,7 @@ input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-in
 /* ============================================================
    VERSION
 ============================================================ */
-const APP_VERSION = '150926.19';
+const APP_VERSION = '150926.20';
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('app-version');
   if(el) el.textContent = APP_VERSION;
@@ -631,7 +624,6 @@ function cleanupStaleFlyers(){
   document.querySelectorAll('.flying-card,.flying-chip,.confetti,.firework,.winner-banner,.flash-overlay').forEach(el => el.remove());
 }
 
-/* Helper: đánh dấu winner cho cả seat và user-panel */
 function markWinner(seatId){
   if(seatId === 0){
     const panel = $('user-panel');
@@ -640,7 +632,6 @@ function markWinner(seatId){
   const seat = $('seat-' + seatId);
   if(seat) seat.classList.add('winner');
 }
-/* Helper: reset winner cho tất cả */
 function clearAllWinners(){
   document.querySelectorAll('.seat').forEach(s => s.classList.remove('winner','active-turn'));
   const panel = $('user-panel');
@@ -696,10 +687,10 @@ function botSay(pIdx, type){
 /* ============================================================
    PERSISTENT STATE
 ============================================================ */
-const LS_STATS = 'rix_poker_stats_v15';
-const LS_ACH = 'rix_poker_ach_v15';
-const LS_SETTINGS = 'rix_poker_settings_v15';
-const SAVE_KEY = 'rix_poker_save_v15';
+const LS_STATS = 'rix_poker_stats_v16';
+const LS_ACH = 'rix_poker_ach_v16';
+const LS_SETTINGS = 'rix_poker_settings_v16';
+const SAVE_KEY = 'rix_poker_save_v16';
 
 const defaultStats = {
   gamesPlayed: 0, wins: 0, losses: 0,
@@ -825,6 +816,8 @@ let botTilt = 0;
 let turnTimerId = null;
 let turnTimeLeft = 0;
 let handRunning = false;
+let startingHand = false;
+let humanActionLock = false;
 
 /* ============================================================
    LOG / SPEECH
@@ -1087,19 +1080,21 @@ function updateUI(){
       else betEl.classList.remove('show');
     }
 
+    // Cards — safety slice(0, 2) chống bug hand cộng dồn
     const cc = $(`cards-${i}`);
     if(cc){
       cc.innerHTML = '';
-      if(p.hand && p.hand.length > 0){
+      const handToShow = (p.hand || []).slice(0, 2);
+      if(handToShow.length > 0){
         cc.classList.add('has-cards');
-        p.hand.forEach(c => {
+        handToShow.forEach(c => {
           const show = p.isHuman || revealAllHands || gameStage === 'SHOWDOWN' || gameStage === 'END';
           cc.appendChild(create3DCardElement(c, show));
         });
       } else cc.classList.remove('has-cards');
     }
 
-    // Active/winner/folded: xử lý riêng cho user (có 2 elements: seat + user-panel)
+    // Active/winner/folded
     if(i === 0){
       const panel = $('user-panel');
       const seat = $('seat-0');
@@ -1700,7 +1695,6 @@ function showWinnerEffects(seatId){
 function createFireworks(seatId, count = 18){
   if(fireworksRunning) return;
   fireworksRunning = true;
-  // Với user (seat-0), lấy rect của user-panel để fireworks bay ra từ avatar
   const target = seatId === 0 ? $('user-panel') : $('seat-' + seatId);
   if(!target){ fireworksRunning = false; return; }
   const rect = target.getBoundingClientRect();
@@ -1774,98 +1768,125 @@ function loadGame(){
    HUMAN ACTION
 ============================================================ */
 function handleHumanChoice(action){
+  // Guard 1: không phải turn human
   if(!isHumanTurnWaiting) return;
-  isHumanTurnWaiting = false;
-  stopTurnTimer();
+  // Guard 2: đang xử lý action khác (chống double-click, click + timer cùng lúc)
+  if(humanActionLock) return;
+  humanActionLock = true;
 
-  const p = players[0];
-  const diff = currentHighestBet - p.currentBet;
+  try {
+    isHumanTurnWaiting = false;
+    stopTurnTimer();
 
-  if(action === 'fold'){
-    p.folded = true;
-    showSpeech(0, "Fold 🏳️");
-    log(`Bạn Fold.`);
-    Sound.playFold(); vibrate(30);
-    p.hasActed = true;
-  } else if(action === 'check'){
-    if(diff > 0){
-      isHumanTurnWaiting = true;
-      startTurnTimer();
-      return;
+    const p = players[0];
+    const diff = currentHighestBet - p.currentBet;
+
+    if(action === 'fold'){
+      p.folded = true;
+      showSpeech(0, "Fold 🏳️");
+      log(`Bạn Fold.`);
+      Sound.playFold(); vibrate(30);
+      p.hasActed = true;
+    } else if(action === 'check'){
+      if(diff > 0){
+        // Không thể check khi có bet — reset trạng thái để user thử lại
+        isHumanTurnWaiting = true;
+        humanActionLock = false;
+        startTurnTimer();
+        updateUI();
+        return;
+      }
+      showSpeech(0, "Check");
+      Sound.playKnock();
+      log(`Bạn Check.`);
+      p.hasActed = true;
+    } else if(action === 'call'){
+      const callAmt = Math.min(p.chips, diff);
+      applyAction(p, 'call', callAmt, 'CALL');
+      vibrate(20);
+    } else if(action === 'raise'){
+      let raiseInput = parseInt($('raise-amount').value) || STRICT_MIN_RAISE;
+      if(raiseInput < STRICT_MIN_RAISE) raiseInput = STRICT_MIN_RAISE;
+      const minAllowed = currentHighestBet + minRaiseDelta - p.currentBet;
+      if(raiseInput < minAllowed) raiseInput = minAllowed;
+      const addAmt = Math.min(p.chips, raiseInput);
+      if(addAmt >= p.chips){
+        vibrate([60, 30, 60, 30, 100]);
+      }
+      applyAction(p, 'raise', addAmt, 'RAISE');
     }
-    showSpeech(0, "Check");
-    Sound.playKnock();
-    log(`Bạn Check.`);
-    p.hasActed = true;
-  } else if(action === 'call'){
-    const callAmt = Math.min(p.chips, diff);
-    applyAction(p, 'call', callAmt, 'CALL');
-    vibrate(20);
-  } else if(action === 'raise'){
-    let raiseInput = parseInt($('raise-amount').value) || STRICT_MIN_RAISE;
-    if(raiseInput < STRICT_MIN_RAISE) raiseInput = STRICT_MIN_RAISE;
-    const minAllowed = currentHighestBet + minRaiseDelta - p.currentBet;
-    if(raiseInput < minAllowed) raiseInput = minAllowed;
-    const addAmt = Math.min(p.chips, raiseInput);
-    if(addAmt >= p.chips){
-      vibrate([60, 30, 60, 30, 100]);
-    }
-    applyAction(p, 'raise', addAmt, 'RAISE');
+
+    activeTurnIdx = (activeTurnIdx + 1) % 4;
+    saveGame();
+    updateUI();
+    runTurnEngine();
+  } finally {
+    humanActionLock = false;
   }
-
-  activeTurnIdx = (activeTurnIdx + 1) % 4;
-  saveGame();
-  runTurnEngine();
 }
 
 /* ============================================================
-   NEW HAND
+   NEW HAND — Có guard chống concurrent
 ============================================================ */
 async function startNewHand(){
-  cleanupStaleFlyers();
-  clearAllWinners();
-  stopTurnTimer();
-  checkBustOuts();
-  createDeck();
+  // Guard: chống concurrent calls (double-click "Ván Tiếp", spam Space)
+  if(startingHand) return;
+  startingHand = true;
 
-  dealerIdx = (dealerIdx + 1) % 4;
-  pot = 0;
-  currentHighestBet = 0;
-  minRaiseDelta = STRICT_MIN_RAISE;
-  communityCards = [];
-  gameStage = 'PREFLOP';
-  revealAllHands = false;
-  sidePots = [];
-  preflopRaiser = -1;
-  raiseInputUserChanged = false;
-  handRunning = false;
+  try {
+    cleanupStaleFlyers();
+    clearAllWinners();
+    stopTurnTimer();
+    checkBustOuts();
+    createDeck();
 
-  players.forEach(p => {
-    p.hand = []; p.folded = false; p.currentBet = 0;
-    p.hasActed = false; p.allIn = false; p.totalContributed = 0;
-  });
+    dealerIdx = (dealerIdx + 1) % 4;
+    pot = 0;
+    currentHighestBet = 0;
+    minRaiseDelta = STRICT_MIN_RAISE;
+    communityCards = [];
+    gameStage = 'PREFLOP';
+    revealAllHands = false;
+    sidePots = [];
+    preflopRaiser = -1;
+    raiseInputUserChanged = false;
+    handRunning = false;
+    humanActionLock = false;
 
-  log(`--- Ván mới! ---`, 'gold');
+    // Force clear hand cũ (dùng .length = 0 để clear array in place)
+    players.forEach(p => {
+      p.hand.length = 0;
+      p.folded = false;
+      p.currentBet = 0;
+      p.hasActed = false;
+      p.allIn = false;
+      p.totalContributed = 0;
+    });
 
-  for(let round = 0; round < 2; round++){
-    for(let i = 0; i < 4; i++){
-      const pIdx = (dealerIdx + 1 + i) % 4;
-      players[pIdx].hand.push(deck.pop());
-      await animateDealCard(`cards-${pIdx}`);
-      updateUI();
+    log(`--- Ván mới! ---`, 'gold');
+
+    for(let round = 0; round < 2; round++){
+      for(let i = 0; i < 4; i++){
+        const pIdx = (dealerIdx + 1 + i) % 4;
+        players[pIdx].hand.push(deck.pop());
+        await animateDealCard(`cards-${pIdx}`);
+        updateUI();
+      }
     }
+
+    const sbIdx = (dealerIdx + 1) % 4;
+    const bbIdx = (dealerIdx + 2) % 4;
+    postBet(sbIdx, SMALL_BLIND);
+    postBet(bbIdx, BIG_BLIND);
+    currentHighestBet = BIG_BLIND;
+
+    activeTurnIdx = (dealerIdx + 3) % 4;
+    updateUI();
+    saveGame();
+    runTurnEngine();
+  } finally {
+    startingHand = false;
   }
-
-  const sbIdx = (dealerIdx + 1) % 4;
-  const bbIdx = (dealerIdx + 2) % 4;
-  postBet(sbIdx, SMALL_BLIND);
-  postBet(bbIdx, BIG_BLIND);
-  currentHighestBet = BIG_BLIND;
-
-  activeTurnIdx = (dealerIdx + 3) % 4;
-  updateUI();
-  saveGame();
-  runTurnEngine();
 }
 
 /* ============================================================
@@ -1876,7 +1897,7 @@ document.addEventListener('keydown', e => {
   const key = e.key.toLowerCase();
   if((gameStage === 'END' || gameStage === 'SHOWDOWN') && (e.key === ' ' || key === 'enter')){
     e.preventDefault();
-    if($('btn-next').style.display !== 'none') startNewHand();
+    if($('btn-next').style.display !== 'none' && !startingHand) startNewHand();
     return;
   }
   if(!isHumanTurnWaiting) return;
@@ -1997,7 +2018,7 @@ function wireButtons(){
   $('btn-check').addEventListener('click', () => handleHumanChoice('check'));
   $('btn-call').addEventListener('click', () => handleHumanChoice('call'));
   $('btn-raise').addEventListener('click', () => handleHumanChoice('raise'));
-  $('btn-next').addEventListener('click', () => startNewHand());
+  $('btn-next').addEventListener('click', () => { if(!startingHand) startNewHand(); });
   $('btn-minus').addEventListener('click', () => adjustRaiseInput(-10));
   $('btn-plus').addEventListener('click', () => adjustRaiseInput(10));
   document.querySelectorAll('.preset-btn').forEach(b => {
